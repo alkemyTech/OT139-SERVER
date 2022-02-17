@@ -2,7 +2,8 @@ var express = require('express')
 var router = express.Router()
 const db = require('../models/index')
 const Sequelize = require('sequelize')
-/* GET users listing. */
+
+/*GET testimony by id */
 router.get('/:id/public', async (req, res, next) => {
   const testimonies = await db.Testimony.findOne({
     where: {

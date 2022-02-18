@@ -24,7 +24,7 @@ router.post('/auth/login', userValidation(), async function (req, res, next) {
     },
   });
 
-  //Do I need to encrypt or decrypt one of the passwords here?
+  //Change the user.password === password when the jwt middleware is ready.
   if (user && user.password === password) {
     res.json(user);
   } else {

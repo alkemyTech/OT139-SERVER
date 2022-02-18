@@ -1,8 +1,7 @@
-var express = require('express')
-var router = express.Router()
+const express = require('express');
+const router = express.Router();
 
-/*GET public data of the organization */
-router.get('/1/public', async (req, res, next) => {
+router.get('/1/public', (req, res, next) => {
   res.json({
     name: 'Somos Mas',
     image:
@@ -11,7 +10,7 @@ router.get('/1/public', async (req, res, next) => {
     address: 'Barrio La Cava',
     welcomeText:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam molestie interdum rutrum. Nulla luctus est eget feugiat condimentum.',
-  })
-})
+  });
+});
 
-module.exports = router
+module.exports = router;

@@ -1,7 +1,7 @@
-'use strict';
 const {
   Model
 } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class Slide extends Model {
     /**
@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
     }
   };
+  
   Slide.init({
     imageUrl: DataTypes.STRING,
     text: DataTypes.STRING,
@@ -21,5 +22,6 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'Slide',
   });
+
   return Slide;
 };

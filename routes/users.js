@@ -8,8 +8,18 @@ router.get('/', function (req, res, next) {
   res.send('respond with a resource');
 });
 
+//Mock jwt auth
+const verifyJsonWebToken = (token, callback) => {
+  return callback({ password: '1234' });
+};
+
 const userValidation = () => {
-  return [(body('email').isEmail(), body('password').isLength({ min: 5 }))];
+  return [
+    (body('email').isEmail().withMessage('Invalid Email'),
+    body('password')
+      .isLength({ min: 6 })
+      .withMessage('password must be at least 6 chars long')),
+  ];
 };
 
 router.post('/auth/login', userValidation(), async function (req, res, next) {
@@ -24,11 +34,22 @@ router.post('/auth/login', userValidation(), async function (req, res, next) {
     },
   });
 
+  let passwordsMatch = false;
   //Change the user.password === password when the jwt middleware is ready.
-  if (user && user.password === password) {
-    res.json(user);
-  } else {
+  if (user) {
+    verifyJsonWebToken(user.token, (err, decoded) => {
+      if (err) {
+        return;
+      } else if (decoded.password == password) {
+        passwordsMatch = true;
+      }
+    });
+  }
+
+  if (!user || passwordsMatch === false) {
     res.status(401).json({ ok: false });
+  } else {
+    res.json(user);
   }
 });
 

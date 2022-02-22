@@ -10,7 +10,7 @@ const generateJsonWebToken = (userData) => {
       },
       (err, token) => {
         if (err) {
-          reject("No se pudo generar el JWT");
+          reject("No se pudo generar el JWT: ", err);
         } else {
           resolve(token);
         }

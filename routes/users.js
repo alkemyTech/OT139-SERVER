@@ -1,16 +1,19 @@
 const express = require('express');
 const router = express.Router();
 const { body, validationResult } = require('express-validator');
-const db = require('models/index');
+const db = require('../models/index.js');
 
 /* GET users listing. */
-router.get('/', function (req, res, next) {
-  res.send('respond with a resource');
+router.get('/', async function (req, res, next) {
+  const users = await db.User.findAll();
+  if (users) {
+    res.json(users);
+  }
 });
 
 //Mock jwt auth
 const verifyJsonWebToken = (token, callback) => {
-  return callback({ password: '1234' });
+  return callback(null, { password: '1234567' });
 };
 
 const userValidation = () => {
@@ -28,11 +31,15 @@ router.post('/auth/login', userValidation(), async function (req, res, next) {
     return res.status(400).json({ errors: errors.array(), ok: false });
   }
   const { email, password } = req.body;
-  const user = await db.User.find({
+
+  const user = await db.User.findOne({
     where: {
       email: email,
     },
   });
+
+  //remove line when user.token is added to main
+  user.token = 'lijfeiajf';
 
   let passwordsMatch = false;
   if (user) {

@@ -35,12 +35,11 @@ router.post('/auth/login', userValidation(), async function (req, res, next) {
   });
 
   let passwordsMatch = false;
-  //Change the user.password === password when the jwt middleware is ready.
   if (user) {
     verifyJsonWebToken(user.token, (err, decoded) => {
       if (err) {
         return;
-      } else if (decoded.password == password) {
+      } else if (decoded.password === password) {
         passwordsMatch = true;
       }
     });

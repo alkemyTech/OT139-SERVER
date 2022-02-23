@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const { body, validationResult } = require('express-validator');
+const { validationResult } = require('express-validator');
 const db = require('../models/index.js');
+const verifyJsonWebToken = require('./jwt'); //change to real path
+const userValidation = require('../middleware/userValidation');
 
 /* GET users listing. */
 router.get('/', async function (req, res, next) {
@@ -10,20 +12,6 @@ router.get('/', async function (req, res, next) {
     res.json(users);
   }
 });
-
-//Mock jwt auth
-const verifyJsonWebToken = (token, callback) => {
-  return callback(null, { password: '1234567' });
-};
-
-const userValidation = () => {
-  return [
-    (body('email').isEmail().withMessage('Invalid Email'),
-    body('password')
-      .isLength({ min: 6 })
-      .withMessage('password must be at least 6 chars long')),
-  ];
-};
 
 router.post('/auth/login', userValidation(), async function (req, res, next) {
   const errors = validationResult(req);

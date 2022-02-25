@@ -5,9 +5,8 @@ const { unSuscriberUser } = require ('../controllers/user');
 /* GET users listing. */
 router.get('/', function(req, res, next) {
   res.send('respond with a resource');
-  console.log(req.body)
 });
 
-router.delete('/:id' , unSuscriberUser)
+router.delete('/:id' , unSuscriberUser);
 
 module.exports = router;

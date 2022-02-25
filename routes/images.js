@@ -1,14 +1,10 @@
 const express = require('express');
 const router = express.Router();
+const imagesController = require('../controllers/imagesController');
 
 const multer = require('multer'); 
 const upload = multer({ dest: 'temp/' }); 
 
+router.post('/upload', upload.single('image'), imagesController.uploadImage);
 
-router.post('/images', upload.single('image'), (req, res) => {
-    const file = req.file;
-    console.log(file)
-    res.send("OK")
-});
-
-module.exports = imagesTestRouter;
+module.exports = router;

@@ -1,5 +1,5 @@
 const fs = require('fs'); 
-const imageUpload = require('../services/imageUploader')
+const imageUpload = require('../services/imageUploader');
 
 const uploadImage = (req, res) => {
         const file = req.file;

@@ -2,10 +2,10 @@ const db = require('../models');
 
 module.exports = {
     updated: (req, res) => {
-        db.New.update({
+        db.Entries.update({
             name: req.body.name,
             content: req.body.content,
-            image: req.file.filename,
+            imageUrl: req.file.filename,
             categoryId: req.body.categoryId,
             type: req.body.type
         }, {

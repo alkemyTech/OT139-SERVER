@@ -1,9 +1,9 @@
 var express = require('express');
 var router = express.Router();
+const usersControllers = require('../controllers/usersController')
+const adminValidation = require('../middlewares/')
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
-});
+router.get('/', adminValidation, usersControllers.getAll);
 
 module.exports = router;

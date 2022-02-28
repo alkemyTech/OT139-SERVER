@@ -13,17 +13,44 @@ module.exports = (sequelize, DataTypes) => {
       User.belongsTo(models.Role, {as: 'role'});
     }
   };
-  User.init({
-    firstName: DataTypes.STRING,
-    lastName: DataTypes.STRING,
-    email: DataTypes.STRING,
-    image: DataTypes.STRING,
-    password: DataTypes.STRING,
-    roleId: DataTypes.INTEGER,
-    deletedAt: DataTypes.DATE
-  }, {
-    sequelize,
-    modelName: 'User',
-  });
+  User.init(
+    {
+      firstName: {
+        type: DataTypes.STRING,
+        allowNull: false
+      },
+      lastName: {
+        type: DataTypes.STRING,
+        allowNull: false
+      },
+      email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true
+      },
+      password: {
+        type: DataTypes.STRING,
+        allowNull: false
+      },
+      image: {
+        type: DataTypes.STRING,
+        allowNull: true
+      },
+      roleId: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        defaultValue: 2
+      },
+      deletedAt: {
+        type: DataTypes.DATE,
+        allowNull: true
+      }
+    },
+    {
+      sequelize,
+      modelName: 'User',
+      paranoid: true
+    }
+  );
   return User;
 };

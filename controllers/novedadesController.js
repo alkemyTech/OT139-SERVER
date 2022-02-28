@@ -24,6 +24,8 @@ module.exports = {
             }
             res.json(resultado)
         })
-        .catch(error => console.log(error));
+        .catch(error => {
+            res.status(404).json({Error: error})
+        });
     }
 }

@@ -20,11 +20,12 @@ module.exports = (sequelize, DataTypes) => {
     image: DataTypes.STRING,
     password: DataTypes.STRING,
     roleId: DataTypes.INTEGER,
-    unsubscribe: { type: DataTypes.BOOLEAN, defaultValue: false },
     deletedAt: DataTypes.DATE
   }, {
     sequelize,
     modelName: 'User',
+    paranoid: true, 
+    timestamps: true
   });
   return User;
 };

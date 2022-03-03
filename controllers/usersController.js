@@ -1,7 +1,9 @@
 const { validationResult } = require('express-validator');
-const verifyJsonWebToken = require('./jwt'); //change to real path
+//@TODO descomment line when jwt is ready
+//const verifyJsonWebToken = require('../middleware/jwt');
 const db = require('../models');
-const { getPassword } = require('../middleware/userValidation');
+//@TODO descomment line when jwt is ready
+//const { getPassword } = require('../middleware/userValidation');
 
 const authUser = async (req, res, next) => {
   const errors = validationResult(req);
@@ -17,10 +19,9 @@ const authUser = async (req, res, next) => {
     },
   });
 
-  //remove line when user.token is added to main
-  user.token = 'lijfeiajf';
-
-  if (user && verifyJsonWebToken(user.token, getPassword) === password) {
+  //@TODO descomment line when jwt is ready.
+  //if (user && verifyJsonWebToken(user.token, getPassword) === password) {
+  if (user && user.password === password) {
     res.json(user);
   } else {
     res.status(401).json({ ok: false });

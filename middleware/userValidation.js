@@ -10,7 +10,10 @@ const userValidation = () => {
 };
 
 const getPassword = (err, decoded, password) => {
-  if (err) return false;
+  if (err) {
+    console.log(err);
+    return false;
+  }
   return decoded.password;
 };
 

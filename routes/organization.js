@@ -10,6 +10,10 @@ router.get('/1/public', (req, res, next) => {
     address: 'Barrio La Cava',
     welcomeText:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam molestie interdum rutrum. Nulla luctus est eget feugiat condimentum.',
+    social: {
+      facebook: 'https://www.facebook.com/Somos_Mas',
+      instagram: 'https://www.instagram.com/SomosMas',
+    },
   });
 });
 

@@ -6,11 +6,14 @@ const add = async (req, res) => {
     const errors = validationResult(req);
     
     if (!errors.isEmpty()) {
-      res.status(422).json({
+      const errorsObj = errors.mapped();
+      
+      return res.status(422).json({
         ok: false,
-        msg: 'ERROR VALIDATING DATA.',
-        error: errors.array(),
-      })
+        msg: "Error validating data",
+        result: null,
+        errors: errorsObj
+      });
     }
   
     try {
@@ -25,11 +28,12 @@ const add = async (req, res) => {
               result: newContact
           })
       })
-    } catch (err) {
-      res.status(400).json({
+
+    } catch (errors) {
+      return res.status(400).json({
         ok: false,
-        msg: 'ERROR CREATING NEW CONTACT.',
-        error: err,
+        msg: 'Error creating contact.',
+        error: errors,
       })
     }
 }

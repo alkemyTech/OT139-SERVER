@@ -1,5 +1,5 @@
 const User = require('../models/user');
-import { SUCCESS , BAD_REQUEST } from '../constants/httpCodes';
+const { SUCCESS , BAD_REQUEST } = require('../constants/httpCodes');
 
 exports.deleteUser = async (req, res) => {
   try {

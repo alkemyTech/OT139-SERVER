@@ -3,4 +3,4 @@ const HTTP_CODES = {
   NOT_FOUND: 404,
 };
 
-module.exports = { HTTP_CODES };
+module.exports = HTTP_CODES;

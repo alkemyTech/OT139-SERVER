@@ -1,5 +1,5 @@
 const db = require('../models');
-const { HTTP_CODES } = require('./../constants/httpCodes');
+const HTTP_CODES = require('./../constants/httpCodes');
 
 const updatedActivity = async (req, res) => {
   const { id } = req.params;
@@ -10,7 +10,10 @@ const updatedActivity = async (req, res) => {
   } catch (error) {
     res
       .status(HTTP_CODES.NOT_FOUND)
-      .send(`Actividad ${id} no encontrada: ${error}`);
+      .json({
+        Msg: `Actividad con ID: ${id}, no encontrada`,
+        Error: error.message,
+      });
   }
 };
 

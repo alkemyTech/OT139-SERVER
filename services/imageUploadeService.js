@@ -1,4 +1,4 @@
-const awsServices = require('./aws');
+const awsServices = require('./awsServices');
 
 const upload = (file) => {
   const result = awsServices.uploadFile(file);

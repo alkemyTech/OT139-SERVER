@@ -1,11 +1,11 @@
 const fs = require('fs'); 
-const imageUpload = require('../services/imageUploader');
+const imageUploadService = require('../services/imageUploadeService');
 
-const uploadImage = (req, res) => {
-        const file = req.file;
-
-        response = imageUpload.upload(file);
-        res.send(response);
+const imageUpload = (req, res) => {
+   const file = req.file;
+   const response = imageUploadService.upload(file);
+   
+   res.send(response);
 };
 
-module.exports = {uploadImage};
+module.exports = {imageUpload};

@@ -10,8 +10,8 @@ const s3 = new AWS.S3({
   sercetAccesKey
 });
 
-const uploadFile = (file) => {
-  const uploadParams = {
+const uploadFile = async (file)  => {
+  const uploadParams = await {
     Bucket: bucketName,
     Body: file,
   };

@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { userValidation } = require('../middleware/userValidation');
-const { authUser } = require('../controllers/usersController');
+const { authUser, deleteUser } = require('../controllers/usersController');
 
 /* GET users listing. */
 router.get('/', function (req, res, next) {
@@ -9,5 +9,6 @@ router.get('/', function (req, res, next) {
 });
 
 router.post('/auth/login', userValidation(), authUser);
+router.delete('/:id', deleteUser);
 
 module.exports = router;

@@ -10,7 +10,7 @@ const getNewsById = async (req, res) => {
   } catch (err) {
     res
       .status(HTTP_CODES.NOT_FOUND)
-      .json({ msg: `Novedad con Id ${id} no encontrada`, err });
+      .json({ msg: `Novedad con Id ${id} no encontrada`, error: err.message });
   }
 };
 

@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const { detailNewsGet } = require('../controllers/newsControllers');
+const { getNewsById } = require('../controllers/newsControllers');
 
-router.get('/:id', detailNewsGet);
+router.get('/:id', getNewsById);
 
 module.exports = router;

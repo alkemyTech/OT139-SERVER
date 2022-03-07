@@ -52,3 +52,21 @@ module.exports = {
   getNewsById,
   deleteNews,
 };
+const Entries = require('../models/entries');
+
+import { HTTP_CODES } from '../constants/httpCodes';
+
+  async function newsCreate(req, res) {
+
+    try {
+    await Entries.create({ 
+    name: req.body.name,
+    content: req.body.content,
+    imageUrl: req.body.imageUrl,
+    categoryId: "News",
+    });
+    res.status(HTTP_CODES.OK).send('Se ha creado correctamente')
+  } catch(error) {
+      res.status(HTTP_CODES.BAD_REQUEST).send(error);
+  }
+};

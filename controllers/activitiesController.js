@@ -8,12 +8,10 @@ const updatedActivity = async (req, res) => {
     const activity = await db.Activity.update({ id }, req.body);
     res.json(activity);
   } catch (error) {
-    res
-      .status(HTTP_CODES.NOT_FOUND)
-      .json({
-        Msg: `Actividad con ID: ${id}, no encontrada`,
-        Error: error.message,
-      });
+    res.status(HTTP_CODES.BAD_REQUEST).json({
+      msg: `Actividad con ID: ${id}, no encontrada`,
+      error: error.message,
+    });
   }
 };
 

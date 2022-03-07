@@ -1,6 +1,6 @@
 const HTTP_CODES = {
-  SUCCESS: 200,
-  NOT_FOUND: 404,
+  OK: 200,
+  BAD_REQUEST: 404,
 };
 
 module.exports = HTTP_CODES;

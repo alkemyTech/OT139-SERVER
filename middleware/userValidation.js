@@ -9,12 +9,4 @@ const userValidation = () => {
   ];
 };
 
-const getPassword = (err, decoded) => {
-  if (err) {
-    console.log(err);
-    return false;
-  }
-  return decoded.password;
-};
-
-module.exports = { userValidation, getPassword };
+module.exports = { userValidation };

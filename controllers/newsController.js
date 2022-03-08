@@ -53,8 +53,7 @@ module.exports = {
   deleteNews,
 };
 const Entries = require('../models/entries');
-
-import { HTTP_CODES } from '../constants/httpCodes';
+const HTTP_CODES = require('../constants/httpCodes');
 
   async function newsCreate(req, res) {
 

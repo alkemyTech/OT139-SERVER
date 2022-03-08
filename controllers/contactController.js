@@ -1,26 +1,26 @@
 const { validationResult } = require('express-validator');
-import { OK , BAD_REQUEST } from '../constants/httpCodes';
+const { OK, BAD_REQUEST } = require('../constants/httpCodes');
 const db = require('../models');
 
 exports.add = async (req, res) => {
-    const { name, email } = req.body;
-    const errors = validationResult(req);
+    const { name, email, phone, message } = req.body;
+    const errorsValidationResult = validationResult(req);
     
-    if (!errors.isEmpty()) {
-      const errorsObj = errors.mapped();
-      
+    if (!errorsValidationResult.isEmpty()) {
       return res.status(BAD_REQUEST).json({
         ok: false,
         msg: "Error validating data",
         result: null,
-        errors: errorsObj
+        errorsMapped: errors.mapped()
       });
     }
   
     try {
-      db.Contact.create({
+      db.Contacts.create({
           name, 
-          email
+          email,
+          phone,
+          message
       })
       .then(newContact => {
           res.status(OK).json({

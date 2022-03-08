@@ -11,12 +11,12 @@ const s3 = new AWS.S3({
 });
 
 const uploadFile = async (file)  => {
-  const uploadParams = await {
+  const uploadParams = {
     Bucket: bucketName,
     Body: file,
   };
 
-  return s3.upload(uploadParams).promise();
+  return await s3.upload(uploadParams).promise();
 };
 
 module.exports = { uploadFile };

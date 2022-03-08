@@ -62,3 +62,22 @@ exports.testimonialsUpdate = async (req, res) => {
     });
   }
 };
+  async function testimonialsCreate(req, res) {
+
+    const name = req.body.name;
+    const content = req.body.content;
+
+    const fieldsComplete = name || content;
+    if (!fieldsComplete) {
+      res.status(BAD_REQUEST).send('Falta completar alguno de los campos')
+    }
+    try {
+    await db.Testimonials.create({ 
+    name,
+    content
+    });
+    res.status(OK).send('Se ha creado correctamente')
+  } catch(error) {
+      res.status(BAD_REQUEST).send(error);
+  }
+};

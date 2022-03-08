@@ -7,13 +7,8 @@ const {
 
 async function getUserData(req, res, next) {
   try {
-    const token = req.headers.authorization;
-
-    // @TODO Quitar el codigo hardcodeado del userId
-    // Verificar el token y obtener el id del payload
-    const userId = 1;
-
-    const authenticatedUser = await db.User.findByPk(userId);
+    const { id } = res.locals.user;
+    const authenticatedUser = await db.User.findByPk(id);
 
     if (!authenticatedUser) {
       return res.status(NOT_FOUND).json({

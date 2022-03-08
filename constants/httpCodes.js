@@ -1,10 +1,10 @@
-const HTTP_CODES = {
+export const HTTP_CODES = {
   OK: 200,
   ACCEPTED: 202,
   BAD_REQUEST: 400,
   UNAUTHORIZED: 401,
-  FORBIDDEN: 403,
   INTERNAL_SERVER_ERROR: 500,
+  FORBIDDEN: 403,
 };
 
 module.exports = HTTP_CODES;

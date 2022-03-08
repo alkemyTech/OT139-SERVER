@@ -18,6 +18,8 @@ exports.testimonialsUpdate = async (req, res) => {
         name,
         image,
         content
+    }, { 
+        where: { id: req.params.id } 
     })
     .then((result) => res.status(OK).json({
         ok: true,

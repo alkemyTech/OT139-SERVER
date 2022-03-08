@@ -6,7 +6,7 @@ const {
   NOT_FOUND,
 } = require('../constants/httpCodes');
 
-exports.getTestimonials = async (req, res) => {
+async function getTestimonials(req, res) {
   try {
     const testimonials = await db.Testimonials.findAll();
 
@@ -24,7 +24,7 @@ exports.getTestimonials = async (req, res) => {
   }
 }
 
-exports.testimonialsUpdate = async (req, res) => {
+async function testimonialsUpdate(req, res) {
   const { name, image, content } = req.body;
 
   try {
@@ -61,23 +61,28 @@ exports.testimonialsUpdate = async (req, res) => {
       error: errors,
     });
   }
-};
-  async function testimonialsCreate(req, res) {
+}
+async function testimonialsCreate(req, res) {
+  const name = req.body.name;
+  const content = req.body.content;
 
-    const name = req.body.name;
-    const content = req.body.content;
-
-    const fieldsComplete = name || content;
-    if (!fieldsComplete) {
-      res.status(BAD_REQUEST).send('Falta completar alguno de los campos')
-    }
-    try {
-    await db.Testimonials.create({ 
-    name,
-    content
-    });
-    res.status(OK).send('Se ha creado correctamente')
-  } catch(error) {
-      res.status(BAD_REQUEST).send(error);
+  const fieldsComplete = name || content;
+  if (!fieldsComplete) {
+    res.status(BAD_REQUEST).send('Falta completar alguno de los campos');
   }
+  try {
+    await db.Testimonials.create({
+      name,
+      content,
+    });
+    res.status(OK).send('Se ha creado correctamente');
+  } catch (error) {
+    res.status(BAD_REQUEST).send(error);
+  }
+}
+
+module.exports = {
+  testimonialsCreate,
+  testimonialsUpdate,
+  getTestimonials
 };

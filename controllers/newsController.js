@@ -1,7 +1,7 @@
 const db = require('../models');
 
-module.exports = {
-    updated: (req, res) => {
+const updated = async (req, res) => {
+    try {
         db.Entries.update({
             name: req.body.name,
             content: req.body.content,
@@ -27,5 +27,10 @@ module.exports = {
         .catch(error => {
             res.status(404).json({Error: error})
         });
+    } catch (error) {
+        res.status(404).json({Error: error})
     }
-}
+        
+    }
+
+    module.exports = updated

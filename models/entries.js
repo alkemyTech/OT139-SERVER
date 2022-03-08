@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
     content: DataTypes.STRING,
     imageUrl: DataTypes.STRING,
     categoryId: DataTypes.STRING,
-    deleteAt: DataTypes.DATE
+    deletedAt: DataTypes.DATE
   }, {
     sequelize,
     modelName: 'Entries',

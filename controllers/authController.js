@@ -1,13 +1,14 @@
 const db = require('../models');
 const {
   OK,
+  BAD_REQUEST,
   NOT_FOUND,
-  INTERNAL_SERVER_ERROR,
 } = require('../constants/httpCodes');
 
-async function getUserData(req, res, next) {
+async function getUserData(req, res) {
+  const { id } = res.locals?.user;
+
   try {
-    const { id } = res.locals.user;
     const authenticatedUser = await db.User.findByPk(id);
 
     if (!authenticatedUser) {
@@ -18,8 +19,8 @@ async function getUserData(req, res, next) {
 
     return res.status(OK).json(authenticatedUser);
   } catch (err) {
-    return res.status(INTERNAL_SERVER_ERROR).json({
-      error: 'Internal server error',
+    return res.status(BAD_REQUEST).json({
+      error: 'User not found',
     });
   }
 }

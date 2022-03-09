@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 const { validationResult } = require('express-validator');
 const db = require('../models');
 const {
@@ -16,13 +15,8 @@ const authUser = async (req, res, next) => {
   }
 
   const { email, password } = req.body;
-=======
-const db = require('../models');
-const { OK, BAD_REQUEST } = require('../constants/httpCodes');
->>>>>>> 5ba6ed45b4eb09f3ffe3ab2db2bb1e6709d8c265
 
   try {
-<<<<<<< HEAD
     const user = await db.User.findOne({
       where: {
         email,
@@ -44,8 +38,6 @@ const { OK, BAD_REQUEST } = require('../constants/httpCodes');
 
 const deleteUser = async (req, res) => {
   try {
-=======
->>>>>>> 5ba6ed45b4eb09f3ffe3ab2db2bb1e6709d8c265
     await db.User.destroy({
       where: {
         id: req.params.id,

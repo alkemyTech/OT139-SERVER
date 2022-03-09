@@ -8,6 +8,12 @@ module.exports = {
     host: process.env.DB_HOST,
     port: process.env.DB_PORT,
     dialect: process.env.DB_DIALECT,
+    define:{ //this is use to that the from not search tables in plural
+    id:false,
+    freezeTableName:true,
+    createdAt:false,
+    updateAt:false
+    }
   },
   test: {
     username: process.env.DB_USER,

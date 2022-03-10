@@ -29,3 +29,5 @@ async function senderEmail(recieverEmail, emailSubject, emailText, emailHtml) {
     return error;
   }
 }
+
+module.exports = senderEmail

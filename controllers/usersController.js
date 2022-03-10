@@ -15,8 +15,8 @@ const authUser = async (req, res, next) => {
   }
 
   const { email, password } = req.body;
+}
 
-<<<<<<< HEAD
 exports.getAll = async (req, res, next) => {
   try {
     db.User.findAll()
@@ -33,7 +33,6 @@ exports.getAll = async (req, res, next) => {
 }
 
 exports.deleteUser = async (req, res) => {
-=======
   try {
     const user = await db.User.findOne({
       where: {
@@ -53,24 +52,7 @@ exports.deleteUser = async (req, res) => {
   }
 };
 
-const deleteUser = async (req, res) => {
->>>>>>> 7c77102c4623148e0b5838a844bf9aed92eb5162
-  try {
-    await db.User.destroy({
-      where: {
-        id: req.params.id,
-      },
-    });
-    res.status(OK).send('Fue Dado de Baja exitosamente! Hasta Pronto!');
-  } catch (errors) {
-    res
-      .status(BAD_REQUEST)
-      .send({ msg: 'Ocurrio un error al tratar de dar de baja al usuario' });
-    console.error(errors.message);
-  }
-};
 
 module.exports = {
-  deleteUser,
   authUser,
 };

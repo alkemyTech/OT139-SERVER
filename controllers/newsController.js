@@ -1,8 +1,9 @@
+const { OK, BAD_REQUEST } = require('../constants/httpCodes');
 const db = require('../models');
 
-const updated = async (req, res) => {
+const update = async (req, res) => {
     try {
-        db.Entries.update({
+        await db.Entries.update({
             name: req.body.name,
             content: req.body.content,
             imageUrl: req.file.filename,
@@ -13,24 +14,11 @@ const updated = async (req, res) => {
                 id: req.params.id
             }
         })
-        .then(result => {
-            let resultado = {
-                meta: {
-                    status: 201,
-                    total: result.length,
-                    url: '/news/update/' + req.params.id
-                },
-                data: result
-            }
-            res.json(resultado)
-        })
-        .catch(error => {
-            res.status(404).json({Error: error})
-        });
+        res.status(OK).send("Datos actualizados correctamente")
     } catch (error) {
-        res.status(404).json({Error: error})
+        res.status(BAD_REQUEST).send({ msg: "Ocurrio un error al actualizar los datos" })
+        console.log(error)
     }
-        
-    }
+}
 
-    module.exports = updated
+module.exports = update

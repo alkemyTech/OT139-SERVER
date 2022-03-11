@@ -1,9 +1,13 @@
 const { validationResult } = require('express-validator');
 const db = require('../models');
-const bcrypt = require("bcryptjs");
-const { OK, BAD_REQUEST } = require('../constants/httpCodes');
+const {
+  OK,
+  BAD_REQUEST,
+  UNAUTHORIZED,
+  INTERNAL_SERVER_ERROR,
+} = require('../constants/httpCodes');
 
-exports.signUp = async (req , res) => {
+const signUp = async (req , res) => {
   try {
     const email = await db.users.findAll({
       attributes: ['email'],
@@ -34,9 +38,37 @@ exports.signUp = async (req , res) => {
   };
 };
 
-exports.deleteUser = async (req, res) => {
+const authUser = async (req, res, next) => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(BAD_REQUEST).json({ errors: errors.array(), ok: false });
+  }
+
+  const { email, password } = req.body;
+
   try {
-    await db.users.destroy({
+    const user = await db.User.findOne({
+      where: {
+        email,
+      },
+    });
+
+    if (user && user.password === password) {
+      res.json(user);
+    } else {
+      res.status(UNAUTHORIZED).json({ ok: false });
+    }
+  } catch (error) {
+    res
+      .status(INTERNAL_SERVER_ERROR)
+      .json({ ok: false, msg: 'internal server error', error });
+  }
+};
+
+const deleteUser = async (req, res) => {
+  try {
+    await db.User.destroy({
       where: {
         id: req.params.id,
       },
@@ -50,7 +82,8 @@ exports.deleteUser = async (req, res) => {
   }
 };
 
-module.exports = { //maybe this module.exports is not necesary
+module.exports = {
   deleteUser,
-  authUser
+  authUser,
+  signUp
 };

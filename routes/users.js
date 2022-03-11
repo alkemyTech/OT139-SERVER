@@ -8,17 +8,14 @@ const { authUser, deleteUser, signUp } = require('../controllers/usersController
 router.get('/', function (req, res, next) {
   res.send('respond with a resource');
 });
-
 router.post('/auth/login', userValidation(), authUser);
 router.post('/auth/register',
 [
 body('firstName').exists(),
 body('lastName').exists(),
 body('email').exists().isEmail(),
-body('password').exists().isLength({min:6}).withMessage('must be at least 8 chars long')
-],signUp);
-
+body('password').exists().isLength({min:6}).withMessage('must be at least 6 chars long')
+], signUp);
 router.delete('/:id', deleteUser);
-
 
 module.exports = router;

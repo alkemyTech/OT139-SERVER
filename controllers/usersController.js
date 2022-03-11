@@ -1,3 +1,4 @@
+const { validationResult } = require('express-validator');
 const db = require('../models');
 const bcrypt = require("bcryptjs");
 const { OK, BAD_REQUEST } = require('../constants/httpCodes');
@@ -48,4 +49,9 @@ exports.deleteUser = async (req, res) => {
       .send({ msg: 'Ocurrio un error al tratar de dar de baja al usuario' });
     console.error(errors.message);
   }
+};
+
+module.exports = {
+  deleteUser,
+  authUser,
 };

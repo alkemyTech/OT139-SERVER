@@ -8,7 +8,6 @@ require('dotenv').config();
 
 const indexRouter = require('./routes/index');
 const organizationRouter = require('./routes/organization');
-const register= require('./routes/register');
 const usersRouter = require('./routes/users');
 
 const app = express();
@@ -25,7 +24,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/auth',register);
 app.use('/organizations', organizationRouter);
 app.use('/users', usersRouter);
 

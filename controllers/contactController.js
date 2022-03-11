@@ -3,7 +3,7 @@ const db = require('../models');
 
 const getAllContacts = async (req, res, next) => {
   try {
-    const contacts = await db.User.findAll();
+    const contacts = await db.Contacts.findAll();
     res.status(HTTP_CODES.ACCEPTED).json({
       ok: true,
       msg: 'Succesful request',

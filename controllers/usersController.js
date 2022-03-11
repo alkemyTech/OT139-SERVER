@@ -20,18 +20,17 @@ exports.signUp = async (req , res) => {
         password: encryptedPassword
       });
       if (users) {
-        res.status(200).send(users);
+        res.status(OK).send(users);
       } else {
-        res.status(400).send('Error,try insert new record');
+        res.status(BAD_REQUEST).send('Error,try insert new record');
       }
     }
     else {
-      res.status(400).send('email be in use,try with other email');
+      res.status(OK).send('email be in use,try with other email');
     }
   }
   catch (error) {
     res.status(BAD_REQUEST).send({ msg: 'there is an error with the server,try later' });
-    console.error(error.message);
   };
 };
 
@@ -51,7 +50,7 @@ exports.deleteUser = async (req, res) => {
   }
 };
 
-module.exports = {
+module.exports = { //maybe this module.exports is not necesary
   deleteUser,
-  authUser,
+  authUser
 };

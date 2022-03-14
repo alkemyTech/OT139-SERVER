@@ -2,13 +2,13 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.bulkInsert('user', [{
-      firstName: 'Usuario',
-      lastName: 'Demo',
-      email: 'test@test.com',
-      // Important: Password not encrypted yet! 
-      password: '1234',
-    
+    await queryInterface.bulkInsert('Slides', [{
+      imageUrl: 'imgurl',
+      text: 'Demo',
+      order: 1,
+      organizationId: 1,
+      createdAt: new Date,
+      updatedAt: new Date
     }], {});
   },
 

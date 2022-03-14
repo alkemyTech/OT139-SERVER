@@ -9,7 +9,7 @@ async function getUserData(req, res) {
   const { id } = res.locals?.user;
 
   try {
-    const authenticatedUser = await db.User.findByPk(id);
+    const authenticatedUser = await db.users.findByPk(id);
 
     if (!authenticatedUser) {
       return res.status(NOT_FOUND).json({

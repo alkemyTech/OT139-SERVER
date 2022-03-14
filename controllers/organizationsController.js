@@ -1,11 +1,18 @@
 const db = require('../models');
 const { OK, BAD_REQUEST, NOT_FOUND } = require('../constants/httpCodes');
 
-async function getFirstOrganization(req, res) {
-  const organizationId = 1;
+async function getOrganization(req, res) {
+  const { id } = req.params;
 
   try {
-    const organization = await db.Organizations.findByPk(organizationId);
+    // Business logic: Only allow the route /1/public
+    if (Number(id) !== 1 || isNaN(id)) {
+      return res.status(BAD_REQUEST).json({
+        error: 'Invalid organization id',
+      });
+    }
+
+    const organization = await db.Organizations.findByPk(id);
     return res.status(OK).json(organization);
   } catch (err) {
     return res.status(NOT_FOUND).json({
@@ -55,6 +62,6 @@ async function editOrganization(req, res) {
 }
 
 module.exports = {
-  getFirstOrganization,
+  getOrganization,
   editOrganization,
 };

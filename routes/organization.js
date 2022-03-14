@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const {
-  getFirstOrganization,
+  getOrganization,
   editOrganization,
 } = require('../controllers/organizationsController');
 
-router.get('/1/public', getFirstOrganization);
+router.get('/:id/public', getOrganization);
 router.put('/:id', editOrganization);
 
 module.exports = router;

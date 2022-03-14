@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const { getOrganization } = require('../controllers/organizationsController');
+const { getFirstOrganization } = require('../controllers/organizationsController');
 
-router.get('/1/public', getOrganization);
+router.get('/1/public', getFirstOrganization);
 
 module.exports = router;

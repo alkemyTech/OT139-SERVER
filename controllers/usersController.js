@@ -48,19 +48,19 @@ const authUser = async (req, res, next) => {
   const { email, password } = req.body;
 }
 
-exports.getAll = async (req, res, next) => {
-  // try {
-  //   db.User.findAll()
-  //     .then(users => {
-  //       return res.status(OK).json({
-  //         results: users
-  //       })
-  //     })
-  // } catch (error) {
-  //   res
-  //     .status(BAD_REQUEST)
-  //     .send({ msg: 'Ocurrio un error al traer a los usuarios' });
-  // }
+const getAll = async (req, res, next) => {
+  try {
+    db.users.findAll()
+      .then(users => {
+        return res.status(OK).json({
+          results: users
+        })
+      })
+  } catch (error) {
+    res
+      .status(BAD_REQUEST)
+      .send({ msg: 'Ocurrio un error al traer a los usuarios' });
+  }
 }
 
 exports.deleteUser = async (req, res) => {
@@ -87,4 +87,5 @@ exports.deleteUser = async (req, res) => {
 module.exports = {
   authUser,
   signUp,
+  getAll
 };

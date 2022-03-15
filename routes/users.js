@@ -16,3 +16,4 @@ body('password').exists().isLength({min:6}).withMessage('must be at least 6 char
 ], signUp);
 router.delete('/:id', deleteUser);
 
+module.exports = router;

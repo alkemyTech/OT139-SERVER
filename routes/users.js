@@ -1,11 +1,11 @@
 const express = require('express');
-var router = express.Router();
-const { authUser, getAll, deleteUser, signUp } = require('../controllers/usersController');
+const router = express.Router();
+const { body } = require('express-validator');
 const { userValidation } = require('../middleware/userValidation');
+const { authUser, deleteUser, signUp, getAll } = require('../controllers/usersController');
 
 /* GET users listing. */
 router.get('/', getAll);
-
 router.post('/auth/login', userValidation(), authUser);
 router.post('/auth/register',
 [
@@ -16,4 +16,3 @@ body('password').exists().isLength({min:6}).withMessage('must be at least 6 char
 ], signUp);
 router.delete('/:id', deleteUser);
 
-module.exports = router;

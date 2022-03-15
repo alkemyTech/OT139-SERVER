@@ -6,8 +6,6 @@ const {
   UNAUTHORIZED,
   INTERNAL_SERVER_ERROR,
 } = require('../constants/httpCodes');
-const { generateJsonWebToken,
-  verifyJsonWebToken } = require('./../helpers/jwt');
 
 const signUp = async (req , res) => {
   try {
@@ -25,7 +23,6 @@ const signUp = async (req , res) => {
         email: req.body.email,
         password: encryptedPassword
       });
-      
       if (users) {
         res.status(OK).send(users);
       } else {
@@ -52,18 +49,18 @@ const authUser = async (req, res, next) => {
 }
 
 exports.getAll = async (req, res, next) => {
-  try {
-    db.User.findAll()
-      .then(users => {
-        return res.status(OK).json({
-          results: users
-        })
-      })
-  } catch (error) {
-    res
-      .status(BAD_REQUEST)
-      .send({ msg: 'Ocurrio un error al traer a los usuarios' });
-  }
+  // try {
+  //   db.User.findAll()
+  //     .then(users => {
+  //       return res.status(OK).json({
+  //         results: users
+  //       })
+  //     })
+  // } catch (error) {
+  //   res
+  //     .status(BAD_REQUEST)
+  //     .send({ msg: 'Ocurrio un error al traer a los usuarios' });
+  // }
 }
 
 exports.deleteUser = async (req, res) => {
@@ -73,10 +70,9 @@ exports.deleteUser = async (req, res) => {
         email,
       },
     });
-    
+
     if (user && user.password === password) {
-      const token = await generateJsonWebToken(user);
-      res.json(user, token);
+      res.json(user);
     } else {
       res.status(UNAUTHORIZED).json({ ok: false });
     }

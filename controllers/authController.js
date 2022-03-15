@@ -6,10 +6,16 @@ const {
 } = require('../constants/httpCodes');
 
 async function getUserData(req, res) {
-  const { id } = res.locals?.user;
+  const userId = res.locals?.user?.id;
+
+  if (!userId) {
+    return res.status(BAD_REQUEST).json({
+      error: 'User not found',
+    });
+  }
 
   try {
-    const authenticatedUser = await db.users.findByPk(id);
+    const authenticatedUser = await db.users.findByPk(userId);
 
     if (!authenticatedUser) {
       return res.status(NOT_FOUND).json({

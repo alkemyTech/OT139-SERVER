@@ -4,5 +4,6 @@ const { news, getNewsById } = require('../controllers/newsController');
 
 router.get('/', news); //get all news
 router.get('/:id', getNewsById);
+router.delete('/:id', deleteNews);
 
 module.exports = router;

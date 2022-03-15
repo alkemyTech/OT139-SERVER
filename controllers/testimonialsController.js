@@ -2,19 +2,18 @@ const db = require('../models');
 const { OK, BAD_REQUEST } = require('../constants/httpCodes');
 
 exports.testimonialsUpdate = async (req, res) => {
-    const { name, image, content } = req.body
+    const { name, image, content } = req.body;
 
-    const testimonial = await db.Testimonials.findOne({ 
-        where: { id: req.params.id } 
-    })
+    const testimonial = await db.Testimonials.findOne({ where: { id: req.params.id } });
+
     if (!testimonial) {
-        return res.status(BAD_REQUEST).json({
-            ok: false,
-            msg: 'No se encontró el testimonio.'
-        })
-    }
+      return res.status(404).json({
+        ok: false,
+        msg: 'El testimonio no fue encontrado.',
+      })
+    };
 
-    await db.testimonials.update({
+    await db.Testimonials.update({
         name,
         image,
         content

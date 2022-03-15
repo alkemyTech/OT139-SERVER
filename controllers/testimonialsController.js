@@ -7,7 +7,7 @@ exports.testimonialsUpdate = async (req, res) => {
     const testimonial = await db.Testimonials.findOne({ where: { id: req.params.id } });
 
     if (!testimonial) {
-      return res.status(404).json({
+      return res.status(BAD_REQUEST).json({
         ok: false,
         msg: 'El testimonio no fue encontrado.',
       })

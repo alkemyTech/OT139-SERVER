@@ -3,6 +3,7 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.bulkInsert('Organizations', [{
+      id: 1,
       name: 'Somos Mas',
       image:
       'https://drive.google.com/file/d/1-j70Zmn2B1-0T_67JHJbNLKkI9sACMNi/view?usp=sharing',
@@ -16,6 +17,6 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    return queryInterface.bulkDelete('Organizations', null, {});
+    return queryInterface.bulkDelete('Organizations', { id: 1 });
   }
 };

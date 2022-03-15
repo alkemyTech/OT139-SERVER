@@ -4,7 +4,7 @@ const generateJsonWebToken = (userData) => {
   return new Promise((resolve, reject) => {
     jwt.sign(
       userData,
-      "secretkey",
+      process.env.SECRET_PRIVATE_KEY,
       {
         expiresIn: "24h",
       },
@@ -20,13 +20,10 @@ const generateJsonWebToken = (userData) => {
 };
 
 const verifyJsonWebToken = (token, callback) => {
-  jwt.verify(token, "secretkey", function (err, decoded) {
-    if (err) {
-      return callback(err);
-    } else {
-      return callback(null, decoded);
-    }
-  });
+  jwt.verify(token, process.env.SECRET_PRIVATE_KEY, (err, decoded) => {
+    return callback(err, decoded);
+  }); 
+    
 };
 
 module.exports = {

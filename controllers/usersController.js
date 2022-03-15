@@ -6,6 +6,8 @@ const {
   UNAUTHORIZED,
   INTERNAL_SERVER_ERROR,
 } = require('../constants/httpCodes');
+const { generateJsonWebToken,
+  verifyJsonWebToken } = require('./../helpers/jwt');
 
 const signUp = async (req , res) => {
   try {
@@ -23,6 +25,7 @@ const signUp = async (req , res) => {
         email: req.body.email,
         password: encryptedPassword
       });
+      
       if (users) {
         res.status(OK).send(users);
       } else {
@@ -53,9 +56,10 @@ const authUser = async (req, res, next) => {
         email,
       },
     });
-
+    
     if (user && user.password === password) {
-      res.json(user);
+      const token = await generateJsonWebToken(user);
+      res.json(user, token);
     } else {
       res.status(UNAUTHORIZED).json({ ok: false });
     }

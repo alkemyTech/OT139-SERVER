@@ -1,8 +1,31 @@
-const verifyJsonWebToken = (token, callback) => {
-  // @TODO Reemplazar con la verdadera implementación
-  // Verificar el token y decodificar el payload
-  const decodedToken = { id: 1 };
-  return callback(null, decodedToken);
+const jwt = require('jsonwebtoken');
+
+const generateJsonWebToken = (userData) => {
+  return new Promise((resolve, reject) => {
+    jwt.sign(
+      userData,
+      process.env.SECRET_PRIVATE_KEY,
+      {
+        expiresIn: '24h',
+      },
+      (err, token) => {
+        if (err) {
+          reject('No se pudo generar el JWT: ', err);
+        } else {
+          resolve(token);
+        }
+      }
+    );
+  });
 };
 
-module.exports = { verifyJsonWebToken };
+const verifyJsonWebToken = (token, callback) => {
+  jwt.verify(token, process.env.SECRET_PRIVATE_KEY, (err, decoded) => {
+    return callback(err, decoded);
+  });
+};
+
+module.exports = {
+  generateJsonWebToken,
+  verifyJsonWebToken,
+};

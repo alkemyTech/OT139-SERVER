@@ -68,9 +68,33 @@ async function deleteNews(req, res) {
     });
   }
 }
+async function newsCreate(req, res) {
+  
+  const name = req.body.name;
+  const content = req.body.content;
+  const imageUrl = req.body.imageUrl;
+  
+  const fieldsComplete = name || content || imageUrl;
+  if (!fieldsComplete) {
+    res.status(HTTP_CODES.BAD_REQUEST).send('Falta completar alguno de los campos')
+  }
+  try {
+    await db.Entries.create({ 
+      name,
+      content,
+      imageUrl,
+      categoryId: "News",
+    });
+    res.status(HTTP_CODES.OK).send('Se ha creado correctamente')
+  } catch(error) {
+    res.status(HTTP_CODES.BAD_REQUEST).send(error);
+  }
+};
+
 
 module.exports = {
   getNewsById,
   deleteNews,
-  update
+  update,
+  newsCreate
 };

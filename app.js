@@ -11,6 +11,7 @@ const authRouter = require('./routes/auth');
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const organizationRouter = require('./routes/organization');
+const activitiesRouter = require('./routes/activities');
 const newsRouter = require('./routes/news');
 const app = express();
 app.use(cors());
@@ -29,6 +30,7 @@ app.use(methodOverride('_method'));
 app.use('/', indexRouter);
 app.use('/auth', authRouter);
 app.use('/organizations', organizationRouter);
+app.use('/activities', activitiesRouter);
 app.use('/users', usersRouter);
 app.use('/news', newsRouter);
 

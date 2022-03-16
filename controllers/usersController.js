@@ -6,6 +6,8 @@ const {
   UNAUTHORIZED,
   INTERNAL_SERVER_ERROR,
 } = require('../constants/httpCodes');
+const { generateJsonWebToken,
+  verifyJsonWebToken } = require('./../helpers/jwt');
 
 const signUp = async (req , res) => {
   try {
@@ -23,6 +25,7 @@ const signUp = async (req , res) => {
         email: req.body.email,
         password: encryptedPassword
       });
+      
       if (users) {
         res.status(OK).send(users);
       } else {
@@ -46,7 +49,26 @@ const authUser = async (req, res, next) => {
   }
 
   const { email, password } = req.body;
-}
+
+  try {
+    const user = await db.users.findOne({
+      where: {
+        email,
+      },
+    });
+    
+    if (user && user.password === password) {
+      const token = await generateJsonWebToken(user);
+      res.json(user, token);
+    } else {
+      res.status(UNAUTHORIZED).json({ ok: false });
+    }
+  } catch (error) {
+    res
+      .status(INTERNAL_SERVER_ERROR)
+      .json({ ok: false, msg: 'internal server error', error });
+  }
+};
 
 const getAll = async (req, res, next) => {
   try {
@@ -61,7 +83,7 @@ const getAll = async (req, res, next) => {
       .status(BAD_REQUEST)
       .send({ msg: 'Ocurrio un error al traer a los usuarios' });
   }
-}
+};
 
 const deleteUser = async (req, res) => {
   try {

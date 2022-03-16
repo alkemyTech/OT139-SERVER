@@ -63,28 +63,24 @@ const getAll = async (req, res, next) => {
   }
 }
 
-exports.deleteUser = async (req, res) => {
+const deleteUser = async (req, res) => {
   try {
-    const user = await db.User.findOne({
+    await db.users.destroy({
       where: {
-        email,
+        id: req.params.id,
       },
     });
-
-    if (user && user.password === password) {
-      res.json(user);
-    } else {
-      res.status(UNAUTHORIZED).json({ ok: false });
-    }
-  } catch (error) {
+    res.status(OK).send('Fue Dado de Baja exitosamente! Hasta Pronto!');
+  } catch (errors) {
     res
-      .status(INTERNAL_SERVER_ERROR)
-      .json({ ok: false, msg: 'internal server error', error });
+      .status(BAD_REQUEST)
+      .send({ msg: 'Ocurrio un error al tratar de dar de baja al usuario' });
+    console.error(errors.message);
   }
 };
 
-
 module.exports = {
+  deleteUser,
   authUser,
   signUp,
   getAll

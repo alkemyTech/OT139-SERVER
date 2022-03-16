@@ -1,8 +1,7 @@
-const { OK, BAD_REQUEST } = require('../constants/httpCodes');
 const db = require('../models');
 const HTTP_CODES = require('../constants/httpCodes');
 
-const update = async (req, res) => {
+const updateNew = async (req, res) => {
     try {
         await db.Entries.update({
             name: req.body.name,
@@ -15,10 +14,10 @@ const update = async (req, res) => {
                 id: req.params.id
             }
         })
-        res.status(OK).send("Datos actualizados correctamente")
+        res.status(HTTP_CODES.OK).send("Datos actualizados correctamente")
     } catch (error) {
-        res.status(BAD_REQUEST).send({ msg: "Ocurrio un error al actualizar los datos" })
-        console.log(error)
+        res.status(HTTP_CODES.BAD_REQUEST).send({ msg: "Ocurrio un error al actualizar los datos" })
+        
     }
 }
 
@@ -95,6 +94,6 @@ async function newsCreate(req, res) {
 module.exports = {
   getNewsById,
   deleteNews,
-  update,
+  updateNew,
   newsCreate
 };

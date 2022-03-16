@@ -51,7 +51,7 @@ const authUser = async (req, res, next) => {
   const { email, password } = req.body;
 
   try {
-    const user = await db.User.findOne({
+    const user = await db.users.findOne({
       where: {
         email,
       },
@@ -72,7 +72,7 @@ const authUser = async (req, res, next) => {
 
 const deleteUser = async (req, res) => {
   try {
-    await db.User.destroy({
+    await db.users.destroy({
       where: {
         id: req.params.id,
       },

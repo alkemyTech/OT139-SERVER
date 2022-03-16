@@ -1,4 +1,4 @@
-const jwt = require("jsonwebtoken");
+const jwt = require('jsonwebtoken');
 
 const generateJsonWebToken = (userData) => {
   return new Promise((resolve, reject) => {
@@ -6,11 +6,11 @@ const generateJsonWebToken = (userData) => {
       userData,
       process.env.SECRET_PRIVATE_KEY,
       {
-        expiresIn: "24h",
+        expiresIn: '24h',
       },
       (err, token) => {
         if (err) {
-          reject("No se pudo generar el JWT: ", err);
+          reject('No se pudo generar el JWT: ', err);
         } else {
           resolve(token);
         }
@@ -22,8 +22,7 @@ const generateJsonWebToken = (userData) => {
 const verifyJsonWebToken = (token, callback) => {
   jwt.verify(token, process.env.SECRET_PRIVATE_KEY, (err, decoded) => {
     return callback(err, decoded);
-  }); 
-    
+  });
 };
 
 module.exports = {

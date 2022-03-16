@@ -70,6 +70,21 @@ const authUser = async (req, res, next) => {
   }
 };
 
+const getAll = async (req, res, next) => {
+  try {
+    db.users.findAll()
+      .then(users => {
+        return res.status(OK).json({
+          results: users
+        })
+      })
+  } catch (error) {
+    res
+      .status(BAD_REQUEST)
+      .send({ msg: 'Ocurrio un error al traer a los usuarios' });
+  }
+};
+
 const deleteUser = async (req, res) => {
   try {
     await db.users.destroy({
@@ -90,4 +105,5 @@ module.exports = {
   deleteUser,
   authUser,
   signUp,
+  getAll
 };

@@ -4,12 +4,15 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors');
+const methodOverride = require('method-override');
 require('dotenv').config();
 
+const authRouter = require('./routes/auth');
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const organizationRouter = require('./routes/organization');
 const contactsRouter = require('./routes/contacts');
+const activitiesRouter = require('./routes/activities');
 const newsRouter = require('./routes/news');
 const app = express();
 app.use(cors());
@@ -23,10 +26,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(methodOverride('_method'));
 
 app.use('/', indexRouter);
+app.use('/auth', authRouter);
 app.use('/organizations', organizationRouter);
 app.use('/contacts', contactsRouter);
+app.use('/activities', activitiesRouter);
 app.use('/users', usersRouter);
 app.use('/news', newsRouter);
 

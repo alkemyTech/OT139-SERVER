@@ -1,6 +1,26 @@
 const db = require('../models');
 const HTTP_CODES = require('../constants/httpCodes');
 
+const updateNew = async (req, res) => {
+    try {
+        await db.Entries.update({
+            name: req.body.name,
+            content: req.body.content,
+            imageUrl: req.file.filename,
+            categoryId: req.body.categoryId,
+            type: req.body.type
+        }, {
+            where: {
+                id: req.params.id
+            }
+        })
+        res.status(HTTP_CODES.OK).send("Datos actualizados correctamente")
+    } catch (error) {
+        res.status(HTTP_CODES.BAD_REQUEST).send({ msg: "Ocurrio un error al actualizar los datos" })
+        
+    }
+}
+
 const getNewsById = async (req, res) => {
   const { id } = req.params;
 
@@ -47,8 +67,33 @@ async function deleteNews(req, res) {
     });
   }
 }
+async function newsCreate(req, res) {
+  
+  const name = req.body.name;
+  const content = req.body.content;
+  const imageUrl = req.body.imageUrl;
+  
+  const fieldsComplete = name || content || imageUrl;
+  if (!fieldsComplete) {
+    res.status(HTTP_CODES.BAD_REQUEST).send('Falta completar alguno de los campos')
+  }
+  try {
+    await db.Entries.create({ 
+      name,
+      content,
+      imageUrl,
+      categoryId: "News",
+    });
+    res.status(HTTP_CODES.OK).send('Se ha creado correctamente')
+  } catch(error) {
+    res.status(HTTP_CODES.BAD_REQUEST).send(error);
+  }
+};
+
 
 module.exports = {
   getNewsById,
   deleteNews,
+  updateNew,
+  newsCreate
 };

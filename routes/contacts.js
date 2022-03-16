@@ -1,8 +1,8 @@
 const express = require('express');
 const { add } = require('../controllers/contactController');
-const validation = require('../middleware/contact');
+const checkFormValues = require('../middleware/contactValidation');
 const router = express.Router();
 
-router.post('/', validation, add);
+router.post('/', checkFormValues, add);
 
 module.exports = router;

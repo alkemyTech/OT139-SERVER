@@ -6,7 +6,7 @@ const { userValidation } = require('../middleware/userValidation');
 const { authUser, deleteUser, signUp, getAll } = require('../controllers/usersController');
 
 /* GET users listing. */
-router.get('/',  isAdmin, getAll);
+router.get('/', isAdmin, getAll);
 router.post('/auth/login', userValidation(), authUser);
 router.post('/auth/register',
 [

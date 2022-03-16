@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { getNewsById, deleteNews } = require('../controllers/newsController');
-const { newsCreate } = require('../controllers/newsController');
+const { getNewsById, deleteNews, newsCreate } = require('../controllers/newsController');
 
 router.get('/:id', getNewsById);
 router.delete('/:id', deleteNews);

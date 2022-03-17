@@ -9,8 +9,6 @@ const imageUpload = (req, res, next) => {
   } catch (error) {
     next(error);
   }
-
-  res.send(response);
 };
 
 module.exports = { imageUpload };

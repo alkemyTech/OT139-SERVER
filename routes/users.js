@@ -1,13 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const { body } = require('express-validator');
+const { isAdmin } = require('../middlewares/verify');
 const { userValidation } = require('../middleware/userValidation');
-const { authUser, deleteUser, signUp } = require('../controllers/usersController');
+const { authUser, deleteUser, signUp, getAll } = require('../controllers/usersController');
 
 /* GET users listing. */
-router.get('/', function (req, res, next) {
-  res.send('respond with a resource');
-});
+router.get('/', isAdmin, getAll);
 router.post('/auth/login', userValidation(), authUser);
 router.post('/auth/register',
 [

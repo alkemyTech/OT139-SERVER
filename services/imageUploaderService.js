@@ -1,11 +1,11 @@
 const awsServices = require('./awsServices');
 
-const upload = (file) => {
-  const { location, key } = awsServices.uploadFile(file);
+const upload = async (file) => {
+  const result = await awsServices.uploadFile(file);
 
   const response = {
-    url: location,
-    key: key
+    url: result.location,
+    key: result.key
   };
 
   return response;

@@ -3,20 +3,17 @@ const AWS = require('aws-sdk');
 
 const bucketName = process.env.AWS_BUCKET;
 const accessKeyId = process.env.AWS_ACCESS_KEY;
-const sercetAccesKey = process.env.AWS_SECRET_ACCESS_KEY;
+const secretAccesKey = process.env.AWS_SECRET_ACCESS_KEY;
 
-const s3 = new AWS.S3({
+const storage = new AWS({
   accessKeyId,
-  sercetAccesKey
+  secretAccesKey,
 });
 
-const uploadFile = async (file)  => {
-  const uploadParams = {
-    Bucket: bucketName,
-    Body: file,
-  };
+const uploadInBucket = (fileName, body) => storage.upload({
+  Bucket: bucketName, 
+  Key: fileName,
+  Body: body, 
+}).promise(); 
 
-  return await s3.upload(uploadParams).promise();
-};
-
-module.exports = { uploadFile };
+module.exports = { uploadInBucket };

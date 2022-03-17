@@ -7,7 +7,7 @@ const getAllNews = async (req, res) => {
           attributes: ['name','imageUrl','createdAt'],
           where: { categoryID:"news" }
       });
-      res.status(HTTP_CODES.OK).send(news);
+      res.status(HTTP_CODES.OK).json(news);
   } catch(err) {
       res.status(HTTP_CODES.NOT_FOUND).send('try again,the server could some problem in this moment');
   };

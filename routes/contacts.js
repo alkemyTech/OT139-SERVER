@@ -1,8 +1,8 @@
 const express = require('express');
 const { getAllContacts } = require('../controllers/contactController');
-const adminValidation = require('../middleware/adminValidation');
+const { isAdmin } = require('../middlewares/verify');
 const router = express.Router();
 
-router.get('/', adminValidation, getAllContacts);
+router.get('/', isAdmin, getAllContacts);
 
 module.exports = router;

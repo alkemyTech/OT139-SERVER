@@ -1,4 +1,5 @@
 const imageUploadService = require('../services/imageUploadeService');
+const { BAD_REQUEST } = require('../constants/httpCodes');
 
 const imageUpload = (req, res, next) => {
   try {
@@ -7,7 +8,9 @@ const imageUpload = (req, res, next) => {
 
     res.send(response);
   } catch (error) {
-    next(error);
+    res
+      .status(BAD_REQUEST)
+      .send({ msg: 'there is an error with the server, try later' });
   }
 };
 

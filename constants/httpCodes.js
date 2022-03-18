@@ -1,4 +1,4 @@
-export const HTTP_CODES = {
+const HTTP_CODES = {
   OK: 200,
   ACCEPTED: 202,
   BAD_REQUEST: 400,
@@ -7,3 +7,5 @@ export const HTTP_CODES = {
   NOT_FOUND: 404,
   INTERNAL_SERVER_ERROR: 500,
 };
+
+module.exports = HTTP_CODES;

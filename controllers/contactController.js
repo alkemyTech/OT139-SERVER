@@ -1,8 +1,13 @@
 const { validationResult } = require('express-validator');
-const { OK, BAD_REQUEST, INTERNAL_SERVER_ERROR } = require('../constants/httpCodes');
+const {
+  OK,
+  BAD_REQUEST,
+  INTERNAL_SERVER_ERROR,
+  HTTP_CODES,
+} = require('../constants/httpCodes');
 const db = require('../models');
 
-exports.add = async (req, res) => {
+const addContact = async (req, res) => {
   const { name, email, phone, message } = req.body;
   const errorsValidationResult = validationResult(req);
 
@@ -35,3 +40,20 @@ exports.add = async (req, res) => {
     });
   }
 };
+
+const getAllContacts = async (req, res, next) => {
+  try {
+    const contacts = await db.Contacts.findAll();
+    res.status(HTTP_CODES.ACCEPTED).json({
+      ok: true,
+      msg: 'Succesful request',
+      result: contacts,
+    });
+  } catch (error) {
+    res
+      .status(HTTP_CODES.INTERNAL_SERVER_ERROR)
+      .json({ ok: false, msg: 'internal server error', error });
+  }
+};
+
+module.exports = { getAllContacts, addContact };

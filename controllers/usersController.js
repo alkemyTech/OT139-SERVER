@@ -13,7 +13,7 @@ const {
 
 const signUp = async (req, res) => {
   try {
-    const email = await db.users.findAll({
+    const email = await db.Users.findAll({
       attributes: ['email'],
       where: { email: `${req.body.email}` },
     });
@@ -21,7 +21,7 @@ const signUp = async (req, res) => {
       let contraseña = req.body.password;
       let rounds = 10;
       const encryptedPassword = await bcrypt.hash(contraseña, rounds);
-      const users = await db.users.create({
+      const users = await db.Users.create({
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         email: req.body.email,
@@ -54,7 +54,7 @@ const authUser = async (req, res, next) => {
   const { email, password } = req.body;
 
   try {
-    const user = await db.User.findOne({
+    const user = await db.Users.findOne({
       where: {
         email,
       },
@@ -73,9 +73,23 @@ const authUser = async (req, res, next) => {
   }
 };
 
+const getAll = async (req, res, next) => {
+  try {
+    db.Users.findAll().then((users) => {
+      return res.status(OK).json({
+        results: users,
+      });
+    });
+  } catch (error) {
+    res
+      .status(BAD_REQUEST)
+      .send({ msg: 'Ocurrio un error al traer a los usuarios' });
+  }
+};
+
 const deleteUser = async (req, res) => {
   try {
-    await db.User.destroy({
+    await db.Users.destroy({
       where: {
         id: req.params.id,
       },
@@ -93,4 +107,5 @@ module.exports = {
   deleteUser,
   authUser,
   signUp,
+  getAll,
 };

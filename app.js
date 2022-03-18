@@ -11,8 +11,10 @@ const authRouter = require('./routes/auth');
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const organizationRouter = require('./routes/organization');
+const contactsRouter = require('./routes/contacts');
 const activitiesRouter = require('./routes/activities');
 const newsRouter = require('./routes/news');
+
 const app = express();
 app.use(cors());
 
@@ -30,6 +32,7 @@ app.use(methodOverride('_method'));
 app.use('/', indexRouter);
 app.use('/auth', authRouter);
 app.use('/organizations', organizationRouter);
+app.use('/contacts', contactsRouter);
 app.use('/activities', activitiesRouter);
 app.use('/users', usersRouter);
 app.use('/news', newsRouter);
@@ -44,7 +47,7 @@ app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
-  
+
   // render the error page
   res.status(err.status || 500);
   res.render('error');

@@ -6,39 +6,42 @@ const {
   UNAUTHORIZED,
   INTERNAL_SERVER_ERROR,
 } = require('../constants/httpCodes');
-const { generateJsonWebToken,
-  verifyJsonWebToken } = require('./../helpers/jwt');
+const {
+  generateJsonWebToken,
+  verifyJsonWebToken,
+} = require('./../helpers/jwt');
 
-const signUp = async (req , res) => {
+const signUp = async (req, res) => {
   try {
     const email = await db.users.findAll({
       attributes: ['email'],
-      where: { email: `${req.body.email}` }
+      where: { email: `${req.body.email}` },
     });
     if (email.length == 0) {
-      let contraseña = req.body.password
-      let rounds = 10
-      const encryptedPassword = await bcrypt.hash(contraseña, rounds)
+      let contraseña = req.body.password;
+      let rounds = 10;
+      const encryptedPassword = await bcrypt.hash(contraseña, rounds);
       const users = await db.users.create({
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         email: req.body.email,
-        password: encryptedPassword
+        password: encryptedPassword,
       });
-      
+
       if (users) {
-        res.status(OK).send(users);
+        const token = await generateJsonWebToken(users);
+        res.status(OK).json(users, token);
       } else {
         res.status(BAD_REQUEST).send('Error,try insert new record');
       }
-    }
-    else {
+    } else {
       res.status(OK).send('email be in use,try with other email');
     }
+  } catch (error) {
+    res
+      .status(BAD_REQUEST)
+      .send({ msg: 'there is an error with the server,try later' });
   }
-  catch (error) {
-    res.status(BAD_REQUEST).send({ msg: 'there is an error with the server,try later' });
-  };
 };
 
 const authUser = async (req, res, next) => {
@@ -56,7 +59,7 @@ const authUser = async (req, res, next) => {
         email,
       },
     });
-    
+
     if (user && user.password === password) {
       const token = await generateJsonWebToken(user);
       res.json(user, token);

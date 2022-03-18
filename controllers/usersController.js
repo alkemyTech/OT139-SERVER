@@ -6,6 +6,8 @@ const {
   UNAUTHORIZED,
   INTERNAL_SERVER_ERROR,
 } = require('../constants/httpCodes');
+const { generateJsonWebToken,
+  verifyJsonWebToken } = require('./../helpers/jwt');
 
 const signUp = async (req , res) => {
   try {
@@ -23,6 +25,7 @@ const signUp = async (req , res) => {
         email: req.body.email,
         password: encryptedPassword
       });
+      
       if (users) {
         res.status(OK).send(users);
       } else {
@@ -48,14 +51,15 @@ const authUser = async (req, res, next) => {
   const { email, password } = req.body;
 
   try {
-    const user = await db.User.findOne({
+    const user = await db.users.findOne({
       where: {
         email,
       },
     });
-
+    
     if (user && user.password === password) {
-      res.json(user);
+      const token = await generateJsonWebToken(user);
+      res.json(user, token);
     } else {
       res.status(UNAUTHORIZED).json({ ok: false });
     }
@@ -66,9 +70,24 @@ const authUser = async (req, res, next) => {
   }
 };
 
+const getAll = async (req, res, next) => {
+  try {
+    db.users.findAll()
+      .then(users => {
+        return res.status(OK).json({
+          results: users
+        })
+      })
+  } catch (error) {
+    res
+      .status(BAD_REQUEST)
+      .send({ msg: 'Ocurrio un error al traer a los usuarios' });
+  }
+};
+
 const deleteUser = async (req, res) => {
   try {
-    await db.User.destroy({
+    await db.users.destroy({
       where: {
         id: req.params.id,
       },
@@ -86,4 +105,5 @@ module.exports = {
   deleteUser,
   authUser,
   signUp,
+  getAll
 };

@@ -4,8 +4,7 @@ const router = express.Router();
 router.get('/1/public', (req, res, next) => {
   res.json({
     name: 'Somos Mas',
-    image:
-      'https://drive.google.com/file/d/1-j70Zmn2B1-0T_67JHJbNLKkI9sACMNi/view?usp=sharing',
+    image: '/images/LOGO-SOMOS-MAS.png',
     phone: '1160112988',
     address: 'Barrio La Cava',
     welcomeText:

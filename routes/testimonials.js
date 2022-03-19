@@ -1,7 +1,8 @@
 const express = require('express');
 var router = express.Router();
-const { testimonialsDelete } = require('../controllers/testimonialsController');
+const { testimonialsDelete , testimonialsUpdate } = require('../controllers/testimonialsController');
 
 router.delete('/:id', testimonialsDelete);
+router.put('/:id', testimonialsUpdate);
 
 module.exports = router;

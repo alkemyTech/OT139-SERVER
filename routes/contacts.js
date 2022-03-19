@@ -1,7 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const { addContact, getAllContacts } = require('../controllers/contactController');
-const validatingContactValues = require('../middleware/contactValidation');
+const {
+    addContact,
+    getAllContacts,
+  } = require('../controllers/contactController');
+  const validatingContactValues = require('../middlewares/contactValidation');
 const { isAdmin } = require('../middlewares/verify');
 
 router.post('/', validatingContactValues, addContact);

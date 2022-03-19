@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  categories.init(
+  Categories.init(
     {
       name: DataTypes.STRING,
       description: DataTypes.STRING,

@@ -12,15 +12,17 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  Activities.init({
-    name: DataTypes.STRING,
-    image: DataTypes.STRING,
-    content: DataTypes.STRING,
-    createdAt: DataTypes.DATE,
-    deletedAt: DataTypes.DATE
-  }, {
-    sequelize,
-    modelName: 'Activities',
-  });
+  Activities.init(
+    {
+      name: DataTypes.STRING,
+      image: DataTypes.STRING,
+      content: DataTypes.TEXT,
+      deletedAt: DataTypes.DATE,
+    },
+    {
+      sequelize,
+      modelName: 'Activities',
+    }
+  );
   return Activities;
 };

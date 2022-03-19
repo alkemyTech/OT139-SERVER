@@ -1,9 +1,5 @@
 const db = require('../models');
-const {
-  OK,
-  BAD_REQUEST,
-  NOT_FOUND,
-} = require('../constants/httpCodes');
+const { OK, BAD_REQUEST, NOT_FOUND } = require('../constants/httpCodes');
 
 async function getUserData(req, res) {
   const userId = res.locals?.user?.id;
@@ -15,7 +11,7 @@ async function getUserData(req, res) {
   }
 
   try {
-    const authenticatedUser = await db.users.findByPk(userId);
+    const authenticatedUser = await db.Users.findByPk(userId);
 
     if (!authenticatedUser) {
       return res.status(NOT_FOUND).json({

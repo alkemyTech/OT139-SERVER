@@ -3,7 +3,26 @@ const {
   OK,
   BAD_REQUEST,
   INTERNAL_SERVER_ERROR,
+  NOT_FOUND,
 } = require('../constants/httpCodes');
+
+exports.getTestimonials = async (req, res) => {
+  try {
+    const testimonials = await db.Testimonials.findAll();
+
+    if (!testimonials?.length) {
+      res.status(NOT_FOUND).json({
+        error: 'Testimonials not found',
+      })
+    }
+
+    res.status(OK).json(testimonials);
+  } catch (err) {
+    res.status(BAD_REQUEST).json({
+      error: 'Testimonials not found',
+    })
+  }
+}
 
 exports.testimonialsUpdate = async (req, res) => {
   const { name, image, content } = req.body;

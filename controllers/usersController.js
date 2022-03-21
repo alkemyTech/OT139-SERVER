@@ -1,4 +1,5 @@
 const { validationResult } = require('express-validator');
+const { hash } = require('bcrypt');
 const db = require('../models');
 const {
   OK,
@@ -6,39 +7,43 @@ const {
   UNAUTHORIZED,
   INTERNAL_SERVER_ERROR,
 } = require('../constants/httpCodes');
-const { generateJsonWebToken,
-  verifyJsonWebToken } = require('./../helpers/jwt');
+const {
+  generateJsonWebToken,
+  verifyJsonWebToken,
+} = require('./../helpers/jwt');
 
-const signUp = async (req , res) => {
+const signUp = async (req, res) => {
   try {
-    const email = await db.users.findAll({
+    const email = await db.Users.findAll({
       attributes: ['email'],
-      where: { email: `${req.body.email}` }
+      where: { email: `${req.body.email}` },
     });
     if (email.length == 0) {
-      let contraseña = req.body.password
-      let rounds = 10
-      const encryptedPassword = await bcrypt.hash(contraseña, rounds)
-      const users = await db.users.create({
+      let contraseña = req.body.password;
+      let rounds = 10;
+      const encryptedPassword = await hash(contraseña, rounds);
+      const users = await db.Users.create({
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         email: req.body.email,
-        password: encryptedPassword
+        password: encryptedPassword,
       });
-      
+
       if (users) {
-        res.status(OK).send(users);
+        const token = await generateJsonWebToken(users);
+        const newUser = { users, token: token };
+        res.status(OK).json(newUser);
       } else {
-        res.status(BAD_REQUEST).send('Error,try insert new record');
+        res.status(BAD_REQUEST).json({ msg: 'Error,try insert new record' });
       }
+    } else {
+      res.status(OK).json({ msg: 'email be in use,try with other email' });
     }
-    else {
-      res.status(OK).send('email be in use,try with other email');
-    }
+  } catch (error) {
+    res
+      .status(BAD_REQUEST)
+      .send({ msg: 'there is an error with the server,try later' });
   }
-  catch (error) {
-    res.status(BAD_REQUEST).send({ msg: 'there is an error with the server,try later' });
-  };
 };
 
 const authUser = async (req, res, next) => {
@@ -51,12 +56,12 @@ const authUser = async (req, res, next) => {
   const { email, password } = req.body;
 
   try {
-    const user = await db.users.findOne({
+    const user = await db.Users.findOne({
       where: {
         email,
       },
     });
-    
+
     if (user && user.password === password) {
       const token = await generateJsonWebToken(user);
       res.json(user, token);
@@ -72,12 +77,11 @@ const authUser = async (req, res, next) => {
 
 const getAll = async (req, res, next) => {
   try {
-    db.users.findAll()
-      .then(users => {
-        return res.status(OK).json({
-          results: users
-        })
-      })
+    db.Users.findAll().then((users) => {
+      return res.status(OK).json({
+        results: users,
+      });
+    });
   } catch (error) {
     res
       .status(BAD_REQUEST)
@@ -87,7 +91,7 @@ const getAll = async (req, res, next) => {
 
 const deleteUser = async (req, res) => {
   try {
-    await db.users.destroy({
+    await db.Users.destroy({
       where: {
         id: req.params.id,
       },
@@ -105,5 +109,5 @@ module.exports = {
   deleteUser,
   authUser,
   signUp,
-  getAll
+  getAll,
 };

@@ -1,4 +1,5 @@
 const { validationResult } = require('express-validator');
+const { hash } = require('bcrypt');
 const db = require('../models');
 const {
   OK,
@@ -20,7 +21,7 @@ const signUp = async (req, res) => {
     if (email.length == 0) {
       let contraseña = req.body.password;
       let rounds = 10;
-      const encryptedPassword = await bcrypt.hash(contraseña, rounds);
+      const encryptedPassword = await hash(contraseña, rounds);
       const users = await db.Users.create({
         firstName: req.body.firstName,
         lastName: req.body.lastName,
@@ -29,12 +30,14 @@ const signUp = async (req, res) => {
       });
 
       if (users) {
-        res.status(OK).send(users);
+        const token = await generateJsonWebToken(users);
+        const newUser = { users, token: token };
+        res.status(OK).json(newUser);
       } else {
-        res.status(BAD_REQUEST).send('Error,try insert new record');
+        res.status(BAD_REQUEST).json({ msg: 'Error,try insert new record' });
       }
     } else {
-      res.status(OK).send('email be in use,try with other email');
+      res.status(OK).json({ msg: 'email be in use,try with other email' });
     }
   } catch (error) {
     res

@@ -5,7 +5,7 @@ async function getMembers(req, res) {
   try {
     const members = await db.Members.findAll();
 
-    if (!members || !members?.length) {
+    if (!members?.length) {
       return res.status(NOT_FOUND).json({
         error: 'Members not found',
       });

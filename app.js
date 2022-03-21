@@ -40,6 +40,7 @@ app.use('/users', usersRouter);
 app.use('/news', newsRouter);
 app.use('/categories', categoriesRouter);
 app.use('/testimonials', testimonialsRouter);
+app.use('/categories', categoriesRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

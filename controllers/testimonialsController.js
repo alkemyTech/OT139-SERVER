@@ -7,7 +7,7 @@ exports.testimonialsDelete = async (req , res) => {
         const testimonialFind = await db.Testimonials.findByPk(id);
 
         if(!testimonialFind) {
-           return res.status(BAD_REQUEST).send({msg:'Testimonio no encontrado'});
+           return res.status(BAD_REQUEST).json({msg:'Testimonio no encontrado'});
         };
 
         await db.Testimonials.destroy({
@@ -16,10 +16,10 @@ exports.testimonialsDelete = async (req , res) => {
             }
         });
 
-        res.status(OK).send({msg:'Testimonio eliminado exitosamente'});
+        res.status(OK).json({msg:'Testimonio eliminado exitosamente'});
         
     } catch(error) {
-        res.status(BAD_REQUEST).send({msg:'Algo salio mal al intentar eliminar el testimonio'});
+        res.status(BAD_REQUEST).json({msg:'Algo salio mal al intentar eliminar el testimonio'});
     }
 
 }

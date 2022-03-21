@@ -16,7 +16,6 @@ const contactsRouter = require('./routes/contacts');
 const activitiesRouter = require('./routes/activities');
 const newsRouter = require('./routes/news');
 const categoriesRouter = require('./routes/categories');
-const contactsRouter = require('./routes/contacts');
 
 const app = express();
 app.use(cors());

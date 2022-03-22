@@ -1,6 +1,4 @@
 const db = require('../models');
-const senderEmail = require('./senderEmailController');
-const createEmail = require('../service/createEmail');
 const { validationResult } = require('express-validator');
 const {
   OK,
@@ -8,23 +6,6 @@ const {
   INTERNAL_SERVER_ERROR,
   HTTP_CODES,
 } = require('../constants/httpCodes');
-
-exports.senderEmailContact = async (req, res) => {
-  const {email , text , subject , textHtml} = createEmail(req.body.email);
- 
-  try {
-      const response = await senderEmail(email , subject , text , textHtml);
-      res.status(OK).send({
-          status: response,
-          msg:'Correo enviado',
-      });
-  } catch(error) {
-          res.status(BAD_REQUEST).send({
-              msg:'Error al enviar el correo'
-          });
-  }
-};
-
 
 const addContact = async (req, res) => {
   const { name, email, phone, message } = req.body;

@@ -27,6 +27,7 @@ const signUp = async (req, res) => {
         lastName: req.body.lastName,
         email: req.body.email,
         password: encryptedPassword,
+        roleId: 2
       });
 
       if (users) {

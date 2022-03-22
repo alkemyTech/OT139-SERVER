@@ -13,14 +13,14 @@ async function getTestimonials(req, res) {
     if (!testimonials?.length) {
       res.status(NOT_FOUND).json({
         error: 'Testimonials not found',
-      })
+      });
     }
 
     res.status(OK).json(testimonials);
   } catch (err) {
     res.status(BAD_REQUEST).json({
       error: 'Testimonials not found',
-    })
+    });
   }
 }
 
@@ -68,21 +68,23 @@ async function testimonialsCreate(req, res) {
 
   const fieldsComplete = name || content;
   if (!fieldsComplete) {
-    res.status(BAD_REQUEST).send('Falta completar alguno de los campos');
+    res
+      .status(BAD_REQUEST)
+      .json({ error: 'Falta completar alguno de los campos' });
   }
   try {
     await db.Testimonials.create({
       name,
       content,
     });
-    res.status(OK).send('Se ha creado correctamente');
+    res.status(OK).json({ ok: true });
   } catch (error) {
-    res.status(BAD_REQUEST).send(error);
+    res.status(BAD_REQUEST).json(error);
   }
 }
 
 module.exports = {
   testimonialsCreate,
   testimonialsUpdate,
-  getTestimonials
+  getTestimonials,
 };

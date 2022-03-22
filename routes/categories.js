@@ -1,7 +1,7 @@
 const express = require('express');
-const { getAllCategories } = require('../controllers/categoriesContollers');
 const {
   updateCategories,
+  getAllCategories,
 } = require('../controllers/categoriesController.js');
 const router = express.Router();
 

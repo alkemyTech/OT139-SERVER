@@ -14,7 +14,7 @@ const createMember = (req, res, next) => {
 
   try {
     await db.Members.create({ name });
-    res.status(CREATED).send('nuevo miembro creado');
+    res.status(CREATED).json({ message: 'member created' });
   } catch (error) {
     res.status(INTERNAL_SERVER_ERROR).json({ error: error.message });
   }

@@ -44,7 +44,6 @@ const getNewsById = async (req, res) => {
 
   try {
     const newsById = await db.Entries.findByPk(id);
-    console.log(newsById);
     if (!newsById) {
       return res.status(HTTP_CODES.NOT_FOUND).json({
         msg: 'News con Id: ' + id + ' no encontrado',

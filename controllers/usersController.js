@@ -31,8 +31,8 @@ const signUp = async (req, res) => {
       });
 
       if (user) {
-        const token = await generateJsonWebToken(users.dataValues);
-        
+        const token = await generateJsonWebToken(user.dataValues);
+
         res.status(OK).json({ user, token: token });
       } else {
         res.status(BAD_REQUEST).json({ msg: 'Error,try insert new record' });

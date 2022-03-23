@@ -18,6 +18,7 @@ const signUp = async (req, res) => {
       attributes: ['email'],
       where: { email: `${req.body.email}` },
     });
+
     if (email.length == 0) {
       let contraseña = req.body.password;
       let rounds = 10;
@@ -28,9 +29,8 @@ const signUp = async (req, res) => {
         email: req.body.email,
         password: encryptedPassword,
       });
-
       if (users) {
-        const token = await generateJsonWebToken(users);
+        const token = await generateJsonWebToken(users.dataValues);
         const newUser = { users, token: token };
         res.status(OK).json(newUser);
       } else {
@@ -63,8 +63,8 @@ const authUser = async (req, res, next) => {
     });
 
     if (user && user.password === password) {
-      const token = await generateJsonWebToken(user);
-      res.json(user, token);
+      const token = await generateJsonWebToken(user.dataValues);
+      res.json({user, token});
     } else {
       res.status(UNAUTHORIZED).json({ ok: false });
     }

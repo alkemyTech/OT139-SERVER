@@ -10,6 +10,6 @@ const { isAdmin } = require('../middlewares/verify');
 
 router.post('/', validatingContactValues, addContact);
 router.get('/', isAdmin, getAllContacts);
-router.post('/', senderEmailContact);
+router.post('/new', senderEmailContact);
 
 module.exports = router;

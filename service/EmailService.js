@@ -1,5 +1,5 @@
-const sgMail = require('@sendgrid/mail');
-const { OK , BAD_REQUEST , ACCEPTED} = require('../constants/httpCodes');
+const sGMail = require('@sendgrid/mail');
+const { OK, BAD_REQUEST, ACCEPTED } = require('../constants/httpCodes');
 const STATUS = require('../constants/constantEmailSender');
 
 const createEmail = (email) => {
@@ -23,10 +23,18 @@ exports.senderEmailContact = async (req, res) => {
 
   try {
     const response = await senderEmail(email, subject, text, textHtml);
+
+    if (response === STATUS.CONFLICT) {
+      return res.status(BAD_REQUEST).json({
+        msg: 'Error al enviar el correo',
+      });
+    }
+
     res.status(OK).json({
       status: response,
       msg: 'Correo enviado',
     });
+
   } catch (error) {
     res.status(BAD_REQUEST).json({
       msg: 'Error al enviar el correo',
@@ -35,9 +43,10 @@ exports.senderEmailContact = async (req, res) => {
 };
 
 async function senderEmail(recieverEmail, emailSubject, emailText, emailHtml) {
-  sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+  sGMail.setApiKey(process.env.SENDGRID_API_KEY);
 
   const sendStatus = STATUS.SUCCESS;
+  const sendStatusError = STATUS.CONFLICT;
   const msg = {
     to: recieverEmail,
     from: process.env.SENDGRID_VERIFIED_SENDER,
@@ -47,18 +56,11 @@ async function senderEmail(recieverEmail, emailSubject, emailText, emailHtml) {
   };
 
   try {
-    const response = await sgMail.json(msg);
+    const response = await sGMail.send(ms);
     if (response[0].statusCode === ACCEPTED) {
       return sendStatus;
-    } else {
-      const responseNotAccepted = {
-        StatusCode: response[0].statusCode,
-        SendStatus: STATUS.CONFLICT,
-      };
-      return responseNotAccepted;
     }
   } catch (error) {
-    return error;
+    return sendStatusError;
   }
 }
-

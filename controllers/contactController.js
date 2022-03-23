@@ -1,4 +1,3 @@
-const db = require('../models');
 const { validationResult } = require('express-validator');
 const {
   OK,
@@ -6,6 +5,7 @@ const {
   INTERNAL_SERVER_ERROR,
   HTTP_CODES,
 } = require('../constants/httpCodes');
+const db = require('../models');
 
 const addContact = async (req, res) => {
   const { name, email, phone, message } = req.body;

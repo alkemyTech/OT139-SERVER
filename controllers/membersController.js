@@ -1,5 +1,11 @@
 const db = require('../models');
-const { OK, BAD_REQUEST, NOT_FOUND } = require('../constants/httpCodes');
+const {
+  OK,
+  CREATED,
+  BAD_REQUEST,
+  NOT_FOUND,
+  INTERNAL_SERVER_ERROR,
+} = require('../constants/httpCodes');
 
 async function getMembers(req, res) {
   try {
@@ -19,6 +25,22 @@ async function getMembers(req, res) {
   }
 }
 
+const createMember = (req, res, next) => {
+  const { name } = req.body;
+
+  if (typeof name !== 'string') {
+    res.status(BAD_REQUEST).send('nombre debe ser una string');
+  }
+
+  try {
+    await db.Members.create({ name });
+    res.status(CREATED).json({ message: 'member created' });
+  } catch (error) {
+    res.status(INTERNAL_SERVER_ERROR).json({ error: error.message });
+  }
+};
+
 module.exports = {
   getMembers,
+  createMember,
 };

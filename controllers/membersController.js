@@ -25,7 +25,7 @@ async function getMembers(req, res) {
   }
 }
 
-const createMember = (req, res, next) => {
+const createMember = async (req, res, next) => {
   const { name } = req.body;
 
   if (typeof name !== 'string') {

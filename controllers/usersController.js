@@ -31,9 +31,9 @@ const signUp = async (req, res) => {
       });
 
       if (user) {
-        // const token = await generateJsonWebToken(users.dataValues);
-        const newUser = { user, token: user.password };
-        res.status(OK).json(newUser);
+        const token = await generateJsonWebToken(users.dataValues);
+        
+        res.status(OK).json({ user, token: token });
       } else {
         res.status(BAD_REQUEST).json({ msg: 'Error,try insert new record' });
       }
@@ -57,9 +57,9 @@ const authUser = async (req, res, next) => {
 
   try {
     const user = await db.Users.findOne({ where: { email } });
-    // const token = await generateJsonWebToken(user);
+    const token = await generateJsonWebToken(user);
 
-    res.json({ user, token: user.password });
+    res.json({ user, token: token });
   } catch (error) {
     res
       .status(INTERNAL_SERVER_ERROR)

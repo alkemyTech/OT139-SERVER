@@ -20,10 +20,13 @@ async function updateCategories(req, res) {
       });
     }
 
-    const updated = await db.Categories.update({
+    const updated = await db.Categories.update(
+      {
         ...category,
         updatedAt: Date.now(),
-    },{ where: { id } });
+      },
+      { where: { id } }
+    );
 
     if (!updated) {
       return res.status(BAD_REQUEST).json({
@@ -41,6 +44,28 @@ async function updateCategories(req, res) {
   }
 }
 
+async function createCategories(req, res) {
+  const name = req.body.name;
+  const description = req.body.description;
+
+  const nameIsString = isNaN(name);
+  if (!nameIsString) {
+    res.status(BAD_REQUEST).json({
+      error: 'el nombre de la categoría no puede ser numerico',
+    });
+  }
+  try {
+    await db.Categories.create({
+      name,
+      description,
+    });
+    res.status(OK).json({ ok: true });
+  } catch (error) {
+    res.status(BAD_REQUEST).json(error);
+  }
+}
+
 module.exports = {
   updateCategories,
+  createCategories,
 };

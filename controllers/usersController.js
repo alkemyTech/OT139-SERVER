@@ -32,7 +32,6 @@ const signUp = async (req, res) => {
 
       if (user) {
         const token = await generateJsonWebToken(user.dataValues);
-
         res.status(OK).json({ user, token: token });
       } else {
         res.status(BAD_REQUEST).json({ msg: 'Error,try insert new record' });
@@ -57,8 +56,14 @@ const authUser = async (req, res, next) => {
 
   try {
     const user = await db.Users.findOne({ where: { email } });
-    const token = await generateJsonWebToken(user);
-
+    const userData = {
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      password: user.password,
+      roleId: user.roleId,
+    };
+    const token = await generateJsonWebToken(userData);
     res.json({ user, token: token });
   } catch (error) {
     res

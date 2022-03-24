@@ -11,7 +11,7 @@ const {
 } = require('../controllers/usersController');
 
 /* GET users listing. */
-router.get('/', getAll);
+router.get('/', isAdmin, getAll);
 router.post('/auth/login', userValidation, authUser);
 router.post(
   '/auth/register',

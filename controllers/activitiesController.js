@@ -1,6 +1,15 @@
 const db = require('../models');
 const HTTP_CODES = require('./../constants/httpCodes');
 
+const getAllActivities = async (req, res) => {
+  try {
+    const activities = await db.Activities.findAll();
+    res.status(HTTP_CODES.OK).json(activities);
+  } catch (error) {
+    res.status(HTTP_CODES.INTERNAL_SERVER_ERROR).json(error);
+  }
+};
+
 const updatedActivity = async (req, res) => {
   const { id } = req.params;
 
@@ -17,4 +26,5 @@ const updatedActivity = async (req, res) => {
 
 module.exports = {
   updatedActivity,
+  getAllActivities,
 };

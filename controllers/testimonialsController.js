@@ -6,25 +6,25 @@ const {
   NOT_FOUND,
 } = require('../constants/httpCodes');
 
-exports.getTestimonials = async (req, res) => {
+async function getTestimonials(req, res) {
   try {
     const testimonials = await db.Testimonials.findAll();
 
     if (!testimonials?.length) {
       res.status(NOT_FOUND).json({
         error: 'Testimonials not found',
-      })
+      });
     }
 
     res.status(OK).json(testimonials);
   } catch (err) {
     res.status(BAD_REQUEST).json({
       error: 'Testimonials not found',
-    })
+    });
   }
 }
 
-exports.testimonialsUpdate = async (req, res) => {
+async function testimonialsUpdate(req, res) {
   const { name, image, content } = req.body;
 
   try {
@@ -61,4 +61,30 @@ exports.testimonialsUpdate = async (req, res) => {
       error: errors,
     });
   }
+}
+async function testimonialsCreate(req, res) {
+  const { name, image, content } = req.body;
+
+  const fieldsComplete = name || content;
+  if (!fieldsComplete) {
+    res
+      .status(BAD_REQUEST)
+      .json({ error: 'Falta completar alguno de los campos' });
+  }
+  try {
+    await db.Testimonials.create({
+      name,
+      image,
+      content,
+    });
+    res.status(OK).json({ ok: true });
+  } catch (error) {
+    res.status(BAD_REQUEST).json(error);
+  }
+}
+
+module.exports = {
+  testimonialsCreate,
+  testimonialsUpdate,
+  getTestimonials,
 };

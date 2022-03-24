@@ -40,7 +40,6 @@ app.use('/contacts', contactsRouter);
 app.use('/activities', activitiesRouter);
 app.use('/users', usersRouter);
 app.use('/news', newsRouter);
-app.use('/categories', categoriesRouter);
 app.use('/testimonials', testimonialsRouter);
 app.use('/categories', categoriesRouter);
 

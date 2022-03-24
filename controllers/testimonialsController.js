@@ -87,8 +87,7 @@ async function testimonialsUpdate(req, res) {
   }
 }
 async function testimonialsCreate(req, res) {
-  const name = req.body.name;
-  const content = req.body.content;
+  const { name, image, content } = req.body;
 
   const fieldsComplete = name || content;
   if (!fieldsComplete) {
@@ -99,6 +98,7 @@ async function testimonialsCreate(req, res) {
   try {
     await db.Testimonials.create({
       name,
+      image,
       content,
     });
     res.status(OK).json({ ok: true });

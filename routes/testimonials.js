@@ -9,8 +9,7 @@ const {
 
 router.delete('/:id', testimonialsDelete);
 router.get('/', getTestimonials);
+router.post('/', testimonialsCreate);
 router.put('/:id', testimonialsUpdate);
-router.post('/testimonials', testimonialsCreate);
-
 
 module.exports = router;

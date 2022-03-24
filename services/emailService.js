@@ -1,4 +1,4 @@
-const sGMail = require('@sendgrid/mail');
+const sgMail = require('@sendgrid/mail');
 const { OK, BAD_REQUEST, ACCEPTED } = require('../constants/httpCodes');
 const STATUS = require('../constants/constantEmailSender');
 
@@ -43,7 +43,7 @@ exports.senderEmailContact = async (req, res) => {
 };
 
 async function senderEmail(recieverEmail, emailSubject, emailText, emailHtml) {
-  sGMail.setApiKey(process.env.SENDGRID_API_KEY);
+  sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
   const sendStatus = STATUS.SUCCESS;
   const sendStatusError = STATUS.CONFLICT;
@@ -56,7 +56,7 @@ async function senderEmail(recieverEmail, emailSubject, emailText, emailHtml) {
   };
 
   try {
-    const response = await sGMail.send(ms);
+    const response = await sgMail.send(ms);
     if (response[0].statusCode === ACCEPTED) {
       return sendStatus;
     }

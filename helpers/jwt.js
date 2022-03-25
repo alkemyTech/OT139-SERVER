@@ -25,7 +25,7 @@ const verifyJsonWebToken = (token, callback) => {
   });
 };
 
-const sanitizeToken = (token) => {
+const sanitizeToken = (token = '') => {
   return token.split(' ')[1];
 };
 

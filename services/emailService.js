@@ -18,27 +18,21 @@ const createEmail = (email) => {
   return dataEmail;
 };
 
-exports.senderEmailContact = async (req, res) => {
-  const { email, text, subject, textHtml } = createEmail(req.body.email);
+const senderEmailContact = async (emailContact) => {
+  const { email, text, subject, textHtml } = createEmail(emailContact);
 
   try {
     const response = await senderEmail(email, subject, text, textHtml);
 
-    if (response === STATUS.CONFLICT) {
-      return res.status(BAD_REQUEST).json({
-        msg: 'Error al enviar el correo',
-      });
-    }
-
-    res.status(OK).json({
+    return {
       status: response,
-      msg: 'Correo enviado',
-    });
-
+      msg: 'Correo enviado!',
+    };
   } catch (error) {
-    res.status(BAD_REQUEST).json({
+    return {
+      status: response,
       msg: 'Error al enviar el correo',
-    });
+    };
   }
 };
 
@@ -56,7 +50,7 @@ async function senderEmail(recieverEmail, emailSubject, emailText, emailHtml) {
   };
 
   try {
-    const response = await sgMail.send(ms);
+    const response = await sgMail.send(msg);
     if (response[0].statusCode === ACCEPTED) {
       return sendStatus;
     }
@@ -64,3 +58,5 @@ async function senderEmail(recieverEmail, emailSubject, emailText, emailHtml) {
     return sendStatusError;
   }
 }
+
+module.exports = senderEmailContact;

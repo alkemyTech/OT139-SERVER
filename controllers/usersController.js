@@ -11,6 +11,7 @@ const {
   generateJsonWebToken,
   verifyJsonWebToken,
 } = require('./../helpers/jwt');
+const senderEmailContact = require('../services/emailService');
 
 const signUp = async (req, res) => {
   try {
@@ -18,7 +19,8 @@ const signUp = async (req, res) => {
       attributes: ['email'],
       where: { email: `${req.body.email}` },
     });
-
+    
+  
     if (email.length == 0) {
       let contraseña = req.body.password;
       let rounds = 10;
@@ -30,11 +32,13 @@ const signUp = async (req, res) => {
         password: encryptedPassword,
         roleId: 2,
       });
+      
+      const senderEmail = await senderEmailContact(req.body.email);
 
       if (user) {
         const token = await generateJsonWebToken(user.dataValues);
-
-        res.status(OK).json({ user, token: token });
+        
+        res.status(OK).json({ user, token: token , senderEmail});
       } else {
         res.status(BAD_REQUEST).json({ msg: 'Error,try insert new record' });
       }
@@ -42,6 +46,7 @@ const signUp = async (req, res) => {
       res.status(OK).json({ msg: 'email be in use,try with other email' });
     }
   } catch (error) {
+    console.log(error)
     res
       .status(BAD_REQUEST)
       .send({ msg: 'there is an error with the server,try later' });

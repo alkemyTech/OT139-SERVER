@@ -7,7 +7,7 @@ async function getUserData(req, res) {
   const token = sanitizeToken(req.headers.authorization);
 
   verifyJsonWebToken(token, (error, decoded) => {
-    userData = decoded;
+    userData = { ...decoded };
   });
 
   try {

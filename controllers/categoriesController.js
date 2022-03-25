@@ -56,6 +56,23 @@ const getAllCategories = async (req, res) => {
   }
 };
   
+const deleteCategory = async (req, res) => {
+  const { id } = req.params;
+  try {
+    await db.Categories.destroy({
+      where: {
+        id,
+      },
+    });
+    res.status(HTTP_CODES.OK).json('Categoria eliminada exitosamente');
+  } catch (errors) {
+    res.status(HTTP_CODES.BAD_REQUEST).json({
+      msg: `Error al eliminar categoria con ID: ${id}`,
+      errors: errors.message,
+    });
+  }
+};
+
 async function createCategories(req, res) {
   const name = req.body.name;
   const description = req.body.description;
@@ -78,6 +95,7 @@ async function createCategories(req, res) {
 }
 
 module.exports = {
+  deleteCategory,
   updateCategories,
   createCategories,
   getAllCategories,

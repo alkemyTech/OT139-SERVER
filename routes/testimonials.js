@@ -3,12 +3,11 @@ var router = express.Router();
 const {
   getTestimonials,
   testimonialsUpdate,
-  testimonialsCreate
+  testimonialsCreate,
 } = require('../controllers/testimonialsController');
 
 router.get('/', getTestimonials);
+router.post('/', testimonialsCreate);
 router.put('/:id', testimonialsUpdate);
-router.post('/testimonials', testimonialsCreate);
-
 
 module.exports = router;

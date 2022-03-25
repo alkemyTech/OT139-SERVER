@@ -16,12 +16,19 @@ async function getMembers(req, res) {
         error: 'Members not found',
       });
     }
-
     return res.status(OK).json(members);
   } catch (err) {
     return res.status(BAD_REQUEST).json({
       error: 'Members not found',
     });
+  }
+}
+const deleteMember = async (req, res) => {
+  try {
+      await db.members.destroy({where: {id: req.params.id}})
+      res.status(OK).json({msg: "Miembro eliminado correctamente"});
+  } catch (error) {
+      res.status(BAD_REQUEST).json({ msg: "Ocurrio un error al intentar eliminar al miembro" })
   }
 }
 
@@ -39,8 +46,19 @@ const createMember = async (req, res, next) => {
     res.status(INTERNAL_SERVER_ERROR).json({ error: error.message });
   }
 };
+const destroy = async (req, res) => {
+  try {
+      await db.members.destroy({where: {id: req.params.id}})
+      res.status(OK).send("Miembro eliminado correctamente");
+  } catch (error) {
+      res.status(BAD_REQUEST).send({ msg: "Ocurrio un error al intentar eliminar al miembro" })
+      console.log(error)
+  }
+}
 
 module.exports = {
   getMembers,
   createMember,
+  destroy,
+  deleteMember
 };

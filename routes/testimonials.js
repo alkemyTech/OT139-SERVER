@@ -4,10 +4,10 @@ const {
   getTestimonials,
   testimonialsUpdate,
   testimonialsCreate,
-  testimonialsDelete,
+  deleteTestimony,
 } = require('../controllers/testimonialsController');
 
-router.delete('/:id', testimonialsDelete);
+router.delete('/:id', deleteTestimony);
 router.get('/', getTestimonials);
 router.post('/', testimonialsCreate);
 router.put('/:id', testimonialsUpdate);

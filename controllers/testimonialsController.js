@@ -6,7 +6,7 @@ const {
   NOT_FOUND,
 } = require('../constants/httpCodes');
 
-const testimonialsDelete = async (req, res) => {
+const deleteTestimony = async (req, res) => {
   const { id } = req.params;
 
   try {
@@ -111,5 +111,5 @@ module.exports = {
   testimonialsCreate,
   testimonialsUpdate,
   getTestimonials,
-  testimonialsDelete,
+  deleteTestimony,
 };

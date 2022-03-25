@@ -4,13 +4,9 @@ const db = require('../models');
 const {
   OK,
   BAD_REQUEST,
-  UNAUTHORIZED,
   INTERNAL_SERVER_ERROR,
 } = require('../constants/httpCodes');
-const {
-  generateJsonWebToken,
-  verifyJsonWebToken,
-} = require('./../helpers/jwt');
+const { generateJsonWebToken } = require('./../helpers/jwt');
 
 const signUp = async (req, res) => {
   try {

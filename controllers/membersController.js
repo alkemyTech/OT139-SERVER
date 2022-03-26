@@ -77,7 +77,6 @@ const destroy = async (req, res) => {
     res
       .status(BAD_REQUEST)
       .send({ msg: 'Ocurrio un error al intentar eliminar al miembro' });
-    console.log(error);
   }
 };
 

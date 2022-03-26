@@ -1,25 +1,32 @@
 const db = require('../models');
 const { OK, BAD_REQUEST, NOT_FOUND } = require('../constants/httpCodes');
+const { verifyJsonWebToken, sanitizeToken } = require('../helpers/jwt');
 
 async function getUserData(req, res) {
-  const userId = res.locals?.user?.id;
+  const userData = {};
+  const token = sanitizeToken(req.headers.authorization);
 
-  if (!userId) {
-    return res.status(BAD_REQUEST).json({
-      error: 'User not found',
-    });
-  }
+  verifyJsonWebToken(token, (error, decoded) => {
+    userData = { ...decoded };
+  });
 
   try {
-    const authenticatedUser = await db.Users.findByPk(userId);
+    const authenticatedUser = await db.Users.findOne({
+      where: { email: userData.email },
+    });
 
     if (!authenticatedUser) {
       return res.status(NOT_FOUND).json({
         error: 'User not found',
       });
     }
-
-    return res.status(OK).json(authenticatedUser);
+    return res.status(OK).json({
+      firstName: authenticatedUser.firstName,
+      lastName: authenticatedUser.lastName,
+      email: authenticatedUser.email,
+      password: authenticatedUser.password,
+      roleId: authenticatedUser.roleId,
+    });
   } catch (err) {
     return res.status(BAD_REQUEST).json({
       error: 'User not found',

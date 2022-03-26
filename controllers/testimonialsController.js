@@ -3,9 +3,52 @@ const {
   OK,
   BAD_REQUEST,
   INTERNAL_SERVER_ERROR,
+  NOT_FOUND,
 } = require('../constants/httpCodes');
 
-exports.testimonialsUpdate = async (req, res) => {
+const deleteTestimony = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const testimonialFind = await db.Testimonials.findByPk(id);
+
+    if (!testimonialFind) {
+      return res.status(BAD_REQUEST).json({ msg: 'Testimonio no encontrado' });
+    }
+
+    await db.Testimonials.destroy({
+      where: {
+        id,
+      },
+    });
+
+    res.status(OK).json({ msg: 'Testimonio eliminado exitosamente' });
+  } catch (error) {
+    res
+      .status(BAD_REQUEST)
+      .json({ msg: 'Algo salio mal al intentar eliminar el testimonio' });
+  }
+};
+
+async function getTestimonials(req, res) {
+  try {
+    const testimonials = await db.Testimonials.findAll();
+
+    if (!testimonials?.length) {
+      res.status(NOT_FOUND).json({
+        error: 'Testimonials not found',
+      });
+    }
+
+    res.status(OK).json(testimonials);
+  } catch (err) {
+    res.status(BAD_REQUEST).json({
+      error: 'Testimonials not found',
+    });
+  }
+}
+
+async function testimonialsUpdate(req, res) {
   const { name, image, content } = req.body;
 
   try {
@@ -42,4 +85,31 @@ exports.testimonialsUpdate = async (req, res) => {
       error: errors,
     });
   }
+}
+async function testimonialsCreate(req, res) {
+  const { name, image, content } = req.body;
+
+  const fieldsComplete = name || content;
+  if (!fieldsComplete) {
+    res
+      .status(BAD_REQUEST)
+      .json({ error: 'Falta completar alguno de los campos' });
+  }
+  try {
+    await db.Testimonials.create({
+      name,
+      image,
+      content,
+    });
+    res.status(OK).json({ ok: true });
+  } catch (error) {
+    res.status(BAD_REQUEST).json(error);
+  }
+}
+
+module.exports = {
+  testimonialsCreate,
+  testimonialsUpdate,
+  getTestimonials,
+  deleteTestimony,
 };

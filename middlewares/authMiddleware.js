@@ -1,11 +1,8 @@
-const { verifyJsonWebToken } = require('../helpers/jwt');
-const {
-  UNAUTHORIZED,
-  FORBIDDEN,
-} = require('../constants/httpCodes');
+const { verifyJsonWebToken, sanitizeToken } = require('../helpers/jwt');
+const { UNAUTHORIZED, FORBIDDEN } = require('../constants/httpCodes');
 
 function verifyUser(req, res, next) {
-  const token = req.headers.authorization;
+  const token = sanitizeToken(req.headers.authorization);
 
   if (!token) {
     return res.status(FORBIDDEN).json({
@@ -16,7 +13,8 @@ function verifyUser(req, res, next) {
   verifyJsonWebToken(token, (error, decodedToken) => {
     if (error) {
       return res.status(UNAUTHORIZED).json({
-        error: 'Invalid token',
+        msg: 'Invalid token',
+        error,
       });
     } else {
       res.locals.user = decodedToken;

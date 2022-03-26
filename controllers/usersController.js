@@ -4,13 +4,9 @@ const db = require('../models');
 const {
   OK,
   BAD_REQUEST,
-  UNAUTHORIZED,
   INTERNAL_SERVER_ERROR,
 } = require('../constants/httpCodes');
-const {
-  generateJsonWebToken,
-  verifyJsonWebToken,
-} = require('./../helpers/jwt');
+const { generateJsonWebToken } = require('./../helpers/jwt');
 
 const signUp = async (req, res) => {
   try {
@@ -22,17 +18,17 @@ const signUp = async (req, res) => {
       let contraseña = req.body.password;
       let rounds = 10;
       const encryptedPassword = await hash(contraseña, rounds);
-      const users = await db.Users.create({
+      const user = await db.Users.create({
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         email: req.body.email,
         password: encryptedPassword,
+        roleId: 2,
       });
 
-      if (users) {
-        const token = await generateJsonWebToken(users);
-        const newUser = { users, token: token };
-        res.status(OK).json(newUser);
+      if (user) {
+        const token = await generateJsonWebToken(user.dataValues);
+        res.status(OK).json({ user, token: token });
       } else {
         res.status(BAD_REQUEST).json({ msg: 'Error,try insert new record' });
       }
@@ -48,26 +44,23 @@ const signUp = async (req, res) => {
 
 const authUser = async (req, res, next) => {
   const errors = validationResult(req);
+  const { email } = req.body;
 
   if (!errors.isEmpty()) {
     return res.status(BAD_REQUEST).json({ errors: errors.array(), ok: false });
   }
 
-  const { email, password } = req.body;
-
   try {
-    const user = await db.Users.findOne({
-      where: {
-        email,
-      },
-    });
-
-    if (user && user.password === password) {
-      const token = await generateJsonWebToken(user);
-      res.json(user, token);
-    } else {
-      res.status(UNAUTHORIZED).json({ ok: false });
-    }
+    const user = await db.Users.findOne({ where: { email } });
+    const userData = {
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      password: user.password,
+      roleId: user.roleId,
+    };
+    const token = await generateJsonWebToken(userData);
+    res.json({ user, token: token });
   } catch (error) {
     res
       .status(INTERNAL_SERVER_ERROR)

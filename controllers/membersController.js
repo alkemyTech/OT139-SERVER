@@ -49,8 +49,29 @@ const createMember = async (req, res, next) => {
   }
 };
 
+const updateMember = async (req, res) => {
+  const { id } = req.params;
+  const { name } = req.body;
+
+  try {
+    const member = await db.Members.findOne({ where: { id } });
+    if (!member) {
+      return res.status(NOT_FOUND).json({
+        error: 'Members not found',
+      });
+    }
+    await member.update({ name });
+    res.status(OK).json({ message: 'Member updated' });
+  } catch (error) {
+    res
+      .status(BAD_REQUEST)
+      .json({ msg: 'Error al actualizar Miembro ', error: error.message });
+  }
+};
+
 module.exports = {
   getMembers,
   createMember,
+  updateMember,
   deleteMember,
 };

@@ -33,12 +33,8 @@ const signUp = async (req, res) => {
 
       if (user) {
         const token = await generateJsonWebToken(user.dataValues);
-<<<<<<< HEAD
         
         res.status(OK).json({ user, token: token , senderEmail});
-=======
-        res.status(OK).json({ user, token: token });
->>>>>>> main
       } else {
         res.status(BAD_REQUEST).json({ msg: 'Error,try insert new record' });
       }
@@ -46,7 +42,6 @@ const signUp = async (req, res) => {
       res.status(OK).json({ msg: 'email be in use,try with other email' });
     }
   } catch (error) {
-    console.log(error)
     res
       .status(BAD_REQUEST)
       .send({ msg: 'there is an error with the server,try later' });

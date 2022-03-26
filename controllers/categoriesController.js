@@ -44,7 +44,7 @@ async function updateCategories(req, res) {
   }
 }
 
-const deleteCategories = async (req, res) => {
+const deleteCategory = async (req, res) => {
   const { id } = req.params;
   try {
     await db.Categories.destroy({
@@ -83,6 +83,7 @@ async function createCategories(req, res) {
 }
 
 module.exports = {
+  deleteCategory,
   updateCategories,
   createCategories,
   deleteCategories,

@@ -59,10 +59,9 @@ const updateMember = async (req, res) => {
       return res.status(NOT_FOUND).json({
         error: 'Members not found',
       });
-    } else {
-      await member.update({ name });
-      res.status(OK).json({ message: 'Member updated' });
     }
+    await member.update({ name });
+    res.status(OK).json({ message: 'Member updated' });
   } catch (error) {
     res
       .status(BAD_REQUEST)

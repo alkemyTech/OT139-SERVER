@@ -3,11 +3,13 @@ const router = express.Router();
 const {
   getMembers,
   createMember,
-  deleteMember
+  updateMember,
+  deleteMember,
 } = require('../controllers/membersController');
 
 router.get('/', getMembers);
 router.post('/', createMember);
+router.put('/:id', updateMember);
 router.delete('/:id', deleteMember);
 
 module.exports = router;

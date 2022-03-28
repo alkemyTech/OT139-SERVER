@@ -1,11 +1,12 @@
-const imageUploadService = require('../services/imageUploadeService');
+const imageUploadService = require('../services/imageUploaderService');
 const { BAD_REQUEST } = require('../constants/httpCodes');
 
-const imageUpload = (req, res, next) => {
+const imageUpload = async (req, res, next) => {
   try {
     const file = req.file;
     const response = await imageUploadService.upload(file);
 
+    console.log(response);
     res.send(response);
   } catch (error) {
     res

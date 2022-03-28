@@ -59,4 +59,4 @@ async function senderEmail(recieverEmail, emailSubject, emailText, emailHtml) {
   }
 }
 
-module.exports = senderEmailContact;
+module.exports = { senderEmailContact };

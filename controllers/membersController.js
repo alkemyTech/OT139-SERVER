@@ -69,21 +69,9 @@ const updateMember = async (req, res) => {
   }
 };
 
-const destroy = async (req, res) => {
-  try {
-    await db.members.destroy({ where: { id: req.params.id } });
-    res.status(OK).send('Miembro eliminado correctamente');
-  } catch (error) {
-    res
-      .status(BAD_REQUEST)
-      .send({ msg: 'Ocurrio un error al intentar eliminar al miembro' });
-  }
-};
-
 module.exports = {
   getMembers,
   createMember,
   updateMember,
-  destroy,
   deleteMember,
 };

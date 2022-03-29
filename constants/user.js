@@ -1,4 +1,4 @@
-const USER = {
+exports.USER = {
   ROLE: {
     ADMIN: 1,
   }

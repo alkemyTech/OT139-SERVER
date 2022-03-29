@@ -3,7 +3,6 @@ const HTTP_CODES = require('./../constants/httpCodes');
 
 const getAllActivities = async (req, res) => {
   try {
-    console.log('getAllActivities');
     const activities = await db.Activities.findAll();
     res.status(HTTP_CODES.OK).json(activities);
   } catch (error) {

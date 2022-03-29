@@ -7,7 +7,7 @@ const {
   INTERNAL_SERVER_ERROR,
 } = require('../constants/httpCodes');
 const { generateJsonWebToken } = require('./../helpers/jwt');
-const senderEmailContact = require('../services/emailService');
+const { senderEmailContact } = require('../services/emailService');
 
 const signUp = async (req, res) => {
   try {

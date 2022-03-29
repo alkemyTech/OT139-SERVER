@@ -3,10 +3,7 @@ const HTTP_CODES = require('../constants/httpCodes');
 
 const getAllNews = async (req, res) => {
   try {
-      const news = await db.Entries.findAll({
-          attributes: ['name','imageUrl','createdAt'],
-          where: { categoryID:"news" }
-      });
+      const news = await db.Entries.findAll();
       res.status(HTTP_CODES.OK).json(news);
   } catch(err) {
       res.status(HTTP_CODES.NOT_FOUND).send('try again,the server could some problem in this moment');

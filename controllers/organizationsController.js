@@ -16,7 +16,7 @@ async function getOrganization(req, res) {
     return res.status(OK).json(organization);
   } catch (err) {
     return res.status(NOT_FOUND).json({
-      error: 'Organization not found',
+      error: err,
     });
   }
 }
@@ -40,10 +40,13 @@ async function editOrganization(req, res) {
       });
     }
 
-    const updated = await db.Organizations.update({
-      ...organization,
-      updatedAt: Date.now(),
-    },{ where: { id } });
+    const updated = await db.Organizations.update(
+      {
+        ...organization,
+        updatedAt: Date.now(),
+      },
+      { where: { id } }
+    );
 
     if (!updated) {
       return res.status(BAD_REQUEST).json({

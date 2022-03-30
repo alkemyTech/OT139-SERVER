@@ -44,6 +44,17 @@ async function updateCategories(req, res) {
   }
 }
 
+const getAllCategories = async (req, res) => {
+  try {
+    const categoryNames = await db.categories.findAll({
+      attributes: ['name'],
+    });
+    res.status(OK).json(categoryNames);
+  } catch (error) {
+    res.status(BAD_REQUEST).json('Hubo un error al traer las categorias');
+  }
+};
+
 const deleteCategory = async (req, res) => {
   const { id } = req.params;
   try {
@@ -86,5 +97,5 @@ module.exports = {
   deleteCategory,
   updateCategories,
   createCategories,
-  deleteCategories,
+  getAllCategories,
 };

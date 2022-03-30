@@ -4,8 +4,10 @@ const {
   deleteCategory,
   updateCategories,
   createCategories,
+  getAllCategories,
 } = require('../controllers/categoriesController.js');
 
+router.get('/', getAllCategories);
 router.put('/:id', updateCategories);
 router.delete('/:id', deleteCategory);
 router.post('/categories', createCategories);

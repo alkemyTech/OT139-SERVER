@@ -3,11 +3,11 @@ const { OK, BAD_REQUEST, NOT_FOUND } = require('../constants/httpCodes');
 const { verifyJsonWebToken, sanitizeToken } = require('../helpers/jwt');
 
 async function getUserData(req, res) {
-  const userData = {};
-  const token = sanitizeToken(req.headers.authorization);
+  let userData = {};
+  const token = req.headers.authorization;
 
   verifyJsonWebToken(token, (error, decoded) => {
-    userData = { ...decoded };
+    userData = {...decoded};
   });
 
   try {

@@ -8,7 +8,6 @@ const validatingContactValues = require('../middlewares/contactValidation');
 const { isAdmin } = require('../middlewares/verify');
 
 router.post('/', validatingContactValues, addContact);
-
 router.get('/', isAdmin, getAllContacts);
 
 module.exports = router;

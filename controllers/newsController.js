@@ -4,7 +4,7 @@ const HTTP_CODES = require('../constants/httpCodes');
 const getAllNews = async (req, res) => {
   try {
       const news = await db.Entries.findAll({
-          attributes: ['name','imageUrl','createdAt'],
+          attributes: ['id', 'name','imageUrl','createdAt'],
           where: { categoryID:"news" }
       });
       res.status(HTTP_CODES.OK).json(news);

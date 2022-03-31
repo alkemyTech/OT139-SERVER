@@ -3,7 +3,7 @@ const { UNAUTHORIZED, FORBIDDEN } = require('../constants/httpCodes');
 
 function verifyUser(req, res, next) {
   const token = sanitizeToken(req.headers.authorization);
-
+  
   if (!token) {
     return res.status(FORBIDDEN).json({
       error: 'A token is required for authentication',

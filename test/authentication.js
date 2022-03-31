@@ -2,6 +2,12 @@ let chai = require('chai');
 let chaiHttp = require('chai-http');
 const expect = require('chai').expect;
 
+// DOCUMENTATION
+
+// Test for authentication is created
+// The first test brings the result OK with the user data
+// The second test brings an error for not having TOKEN
+
 chai.use(chaiHttp);
 
 const url = 'http://localhost:3000';

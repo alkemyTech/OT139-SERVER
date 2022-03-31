@@ -17,8 +17,18 @@ let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmaXJzdE5hbWUiOiJsdWNhcyIsIm
         expect(res).to.have.status(200);
         done()
       })
-      
+    });
+  });
 
+  describe('Error at get data user specific for token', () => {
+    it('Should respond with json containing error for token', (done) => {
+      chai.request(url)
+      .get('/auth/me')
+      .set({'Authorization': ''})
+      .end((err , res) => { 
+        expect(res).to.have.status(403);
+        done()
+      })
     });
   });
   

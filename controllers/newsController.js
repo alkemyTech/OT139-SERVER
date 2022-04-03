@@ -3,10 +3,18 @@ const HTTP_CODES = require('../constants/httpCodes');
 
 const getAllNews = async (req, res) => {
   try {
+    if (req.body.isTest) {
+      throw new Error('Error al obtener las noticias');
+    }
     const news = await db.Entries.findAll({
       attributes: ['id', 'name', 'imageUrl', 'createdAt'],
       where: { categoryID: 'news' },
     });
+    if (!news) {
+      return res.status(HTTP_CODES.NOT_FOUND).json({
+        msg: 'No hay noticias',
+      });
+    }
     res.status(HTTP_CODES.OK).json(news);
   } catch (err) {
     res
@@ -16,21 +24,35 @@ const getAllNews = async (req, res) => {
 };
 
 const updateNew = async (req, res) => {
+  const { name, content, imageUrl } = req.body;
+  const { id } = req.params;
   try {
-    await db.Entries.update(
+    const news = await db.Entries.findOne({
+      where: { id },
+    });
+    if (!news) {
+      return res.status(HTTP_CODES.NOT_FOUND).json({
+        msg: `No se encontro la noticia con ID: ${id}`,
+      });
+    }
+
+    const newsUpdated = await db.Entries.update(
       {
-        name: req.body.name,
-        content: req.body.content,
-        imageUrl: req.file.filename,
-        categoryId: req.body.categoryId,
-        type: req.body.type,
+        name,
+        content,
+        imageUrl,
       },
       {
         where: {
-          id: req.params.id,
+          id,
         },
       }
     );
+    if (!newsUpdated) {
+      return res
+        .status(HTTP_CODES.NOT_FOUND)
+        .send('No se pudo actualizar la noticia');
+    }
     res.status(HTTP_CODES.OK).send('Datos actualizados correctamente');
   } catch (error) {
     res
@@ -92,16 +114,14 @@ async function deleteNews(req, res) {
   }
 }
 async function newsCreate(req, res) {
-  const name = req.body.name;
-  const content = req.body.content;
-  const imageUrl = req.body.imageUrl;
+  const { name, content, imageUrl } = req.body;
 
-  const fieldsComplete = name || content || imageUrl;
-  if (!fieldsComplete) {
-    res
+  if (!name || !content || !imageUrl) {
+    return res
       .status(HTTP_CODES.BAD_REQUEST)
       .send('Falta completar alguno de los campos');
   }
+
   try {
     await db.Entries.create({
       name,
@@ -111,7 +131,9 @@ async function newsCreate(req, res) {
     });
     res.status(HTTP_CODES.OK).send('Se ha creado correctamente');
   } catch (error) {
-    res.status(HTTP_CODES.BAD_REQUEST).send(error);
+    res
+      .status(HTTP_CODES.BAD_REQUEST)
+      .send({ error, msg: 'Error al crear la noticia' });
   }
 }
 

@@ -3,9 +3,6 @@ const HTTP_CODES = require('../constants/httpCodes');
 
 const getAllNews = async (req, res) => {
   try {
-    if (req.body.isTest) {
-      throw new Error('Error al obtener las noticias');
-    }
     const news = await db.Entries.findAll({
       attributes: ['id', 'name', 'imageUrl', 'createdAt'],
       where: { categoryID: 'news' },

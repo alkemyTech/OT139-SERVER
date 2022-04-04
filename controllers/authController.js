@@ -4,10 +4,10 @@ const { verifyJsonWebToken, sanitizeToken } = require('../helpers/jwt');
 
 async function getUserData(req, res) {
   let userData = {};
-  const token = sanitizeToken(req.headers.authorization);
+  const token = req.headers.authorization;
 
   verifyJsonWebToken(token, (error, decoded) => {
-    userData = { ...decoded };
+    userData = {...decoded};
   });
 
   try {

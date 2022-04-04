@@ -8,7 +8,7 @@ module.exports = {
         lastName: 'Demo1',
         email: 'test1@test.com',
         password:
-          '$2a$12$KnpNSc/3oUD.LuJcvxi/2OSwuV.Ie/qKKmrgiTzYbdg7G9RvH9kLi',
+          '$2a$12$dTxcoLjbEBeznoW/Kza./u18obz1swM8Om3DaaLtF.gQ7Jdi2voDG',
         roleId: 1,
         image: 'https://via.placeholder.com/150',
         createdAt: new Date(),

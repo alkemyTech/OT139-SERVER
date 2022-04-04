@@ -6,6 +6,30 @@ const {
   NOT_FOUND,
 } = require('../constants/httpCodes');
 
+const deleteTestimony = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const testimonialFind = await db.Testimonials.findByPk(id);
+
+    if (!testimonialFind) {
+      return res.status(BAD_REQUEST).json({ msg: 'Testimonio no encontrado' });
+    }
+
+    await db.Testimonials.destroy({
+      where: {
+        id,
+      },
+    });
+
+    res.status(OK).json({ msg: 'Testimonio eliminado exitosamente' });
+  } catch (error) {
+    res
+      .status(BAD_REQUEST)
+      .json({ msg: 'Algo salio mal al intentar eliminar el testimonio' });
+  }
+};
+
 async function getTestimonials(req, res) {
   try {
     const testimonials = await db.Testimonials.findAll();
@@ -87,4 +111,5 @@ module.exports = {
   testimonialsCreate,
   testimonialsUpdate,
   getTestimonials,
+  deleteTestimony,
 };

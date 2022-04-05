@@ -35,20 +35,6 @@ describe('News Api', () => {
           done();
         });
     });
-
-    it('it should NOT GET all the news', (done) => {
-      chai
-        .request(server)
-        .get('/new')
-        .send({ isTest: true })
-        .end((err, res) => {
-          res.should.have.status(404);
-          res.text.should.be.eql(
-            'try again,the server could some problem in this moment'
-          );
-          done();
-        });
-    });
   });
 
   describe('/GET news/:id', () => {

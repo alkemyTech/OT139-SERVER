@@ -51,7 +51,7 @@ const signUp = async (req, res) => {
 const authUser = async (req, res, next) => {
   const errors = validationResult(req);
   const { email } = req.body;
-
+  console.log('hell')
   if (!errors.isEmpty()) {
     return res.status(BAD_REQUEST).json({ errors: errors.array(), ok: false });
   }

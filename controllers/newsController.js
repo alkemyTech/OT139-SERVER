@@ -3,46 +3,77 @@ const HTTP_CODES = require('../constants/httpCodes');
 
 const getAllNews = async (req, res) => {
   try {
-      const news = await db.Entries.findAll({
-          attributes: ['id', 'name','imageUrl','createdAt'],
-          where: { categoryID:"news" }
+    const news = await db.Entries.findAll({
+      attributes: ['id', 'name', 'imageUrl', 'createdAt'],
+      where: { categoryID: 'news' },
+    });
+    if (!news) {
+      return res.status(HTTP_CODES.NOT_FOUND).json({
+        msg: 'No hay noticias',
       });
-      res.status(HTTP_CODES.OK).json(news);
-  } catch(err) {
-      res.status(HTTP_CODES.NOT_FOUND).send('try again,the server could some problem in this moment');
-  };
+    }
+    res.status(HTTP_CODES.OK).json(news);
+  } catch (err) {
+    res
+      .status(HTTP_CODES.NOT_FOUND)
+      .send('try again,the server could some problem in this moment');
+  }
 };
 
 const updateNew = async (req, res) => {
-    try {
-        await db.Entries.update({
-            name: req.body.name,
-            content: req.body.content,
-            imageUrl: req.file.filename,
-            categoryId: req.body.categoryId,
-            type: req.body.type
-        }, {
-            where: {
-                id: req.params.id
-            }
-        })
-        res.status(HTTP_CODES.OK).send("Datos actualizados correctamente")
-    } catch (error) {
-        res.status(HTTP_CODES.BAD_REQUEST).send({ msg: "Ocurrio un error al actualizar los datos" })
-        
+  const { name, content, imageUrl } = req.body;
+  const { id } = req.params;
+  try {
+    const news = await db.Entries.findOne({
+      where: { id },
+    });
+    if (!news) {
+      return res.status(HTTP_CODES.NOT_FOUND).json({
+        msg: `No se encontro la noticia con ID: ${id}`,
+      });
     }
-}
+
+    const newsUpdated = await db.Entries.update(
+      {
+        name,
+        content,
+        imageUrl,
+      },
+      {
+        where: {
+          id,
+        },
+      }
+    );
+    if (!newsUpdated) {
+      return res
+        .status(HTTP_CODES.NOT_FOUND)
+        .send('No se pudo actualizar la noticia');
+    }
+    res.status(HTTP_CODES.OK).send('Datos actualizados correctamente');
+  } catch (error) {
+    res
+      .status(HTTP_CODES.BAD_REQUEST)
+      .send({ msg: 'Ocurrio un error al actualizar los datos' });
+  }
+};
 
 const getNewsById = async (req, res) => {
   const { id } = req.params;
 
   try {
     const newsById = await db.Entries.findByPk(id);
+    if (!newsById) {
+      return res.status(HTTP_CODES.NOT_FOUND).json({
+        msg: 'News con Id: ' + id + ' no encontrado',
+        error: 'News not found',
+      });
+    }
     res.json(newsById);
   } catch (err) {
     res
       .status(HTTP_CODES.NOT_FOUND)
-      .json({ msg: `Novedad con Id ${id} no encontrada`, error: err.message });
+      .json({ msg: `Error al buscar por ID`, error: err.message });
   }
 };
 
@@ -80,33 +111,33 @@ async function deleteNews(req, res) {
   }
 }
 async function newsCreate(req, res) {
-  
-  const name = req.body.name;
-  const content = req.body.content;
-  const imageUrl = req.body.imageUrl;
-  
-  const fieldsComplete = name || content || imageUrl;
-  if (!fieldsComplete) {
-    res.status(HTTP_CODES.BAD_REQUEST).send('Falta completar alguno de los campos')
+  const { name, content, imageUrl } = req.body;
+
+  if (!name || !content || !imageUrl) {
+    return res
+      .status(HTTP_CODES.BAD_REQUEST)
+      .send('Falta completar alguno de los campos');
   }
+
   try {
-    await db.Entries.create({ 
+    await db.Entries.create({
       name,
       content,
       imageUrl,
-      categoryId: "News",
+      categoryId: 'News',
     });
-    res.status(HTTP_CODES.OK).send('Se ha creado correctamente')
-  } catch(error) {
-    res.status(HTTP_CODES.BAD_REQUEST).send(error);
+    res.status(HTTP_CODES.OK).send('Se ha creado correctamente');
+  } catch (error) {
+    res
+      .status(HTTP_CODES.BAD_REQUEST)
+      .send({ error, msg: 'Error al crear la noticia' });
   }
-};
-
+}
 
 module.exports = {
   getNewsById,
   deleteNews,
   getAllNews,
   updateNew,
-  newsCreate
+  newsCreate,
 };
